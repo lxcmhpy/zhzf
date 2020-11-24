@@ -13,7 +13,11 @@
           >当事人</a
         >
         <a href="#" :class="activeA[2] ? 'activeA' : ''" @click="jump(3)">{{
-          cateNameType ? "车辆信息" : inforForm.zfmlId !== '1002000500000000'?"船舶信息":"港口信息"
+          cateNameType
+            ? "车辆信息"
+            : inforForm.zfmlId !== "1002000500000000"
+            ? "船舶信息"
+            : "港口信息"
         }}</a>
         <a
           href="#"
@@ -214,16 +218,12 @@
             <label class="el-form-item__label" style="width: 100px"
               >案发地点</label
             >
-            <div class="itemFive2" style="width:60%;">
+            <div class="itemFive2" style="width: 60%">
               <el-form-item label-width="0" prop="afdd">
-                <el-input
-                  ref="afdd"
-                  v-model="inforForm.afdd"
-                >
-                </el-input>
+                <el-input ref="afdd" v-model="inforForm.afdd"> </el-input>
               </el-form-item>
             </div>
-            <div class="showMapBtn" style="padding-top:4px;">
+            <div class="showMapBtn" style="padding-top: 4px">
               <label class="mustTip">*</label>
               <el-button
                 type="primary"
@@ -361,17 +361,16 @@
                   </template>
                 </el-input>
               </el-form-item> -->
-              <label class="el-form-item__label" style="width: 100px;height:20px;"></label>
-              <div class="itemFive2" style="width:60%;">
+              <label
+                class="el-form-item__label"
+                style="width: 100px; height: 20px"
+              ></label>
+              <div class="itemFive2" style="width: 60%">
                 <el-form-item label-width="0" prop="afdd">
-                  <el-input
-                    ref="afdd"
-                    v-model="inforForm.afdd"
-                  >
-                  </el-input>
+                  <el-input ref="afdd" v-model="inforForm.afdd"> </el-input>
                 </el-form-item>
               </div>
-              <div class="showMapBtn" style="padding-top:4px;">
+              <div class="showMapBtn" style="padding-top: 4px">
                 <label class="mustTip">*</label>
                 <el-button
                   type="primary"
@@ -421,16 +420,12 @@
             <label class="el-form-item__label" style="width: 100px"
               >案发地点</label
             >
-            <div class="itemFive2" style="width:60%;">
+            <div class="itemFive2" style="width: 60%">
               <el-form-item label-width="0" prop="afdd">
-                <el-input
-                  ref="afdd"
-                  v-model="inforForm.afdd"
-                >
-                </el-input>
+                <el-input ref="afdd" v-model="inforForm.afdd"> </el-input>
               </el-form-item>
             </div>
-            <div class="showMapBtn" style="padding-top:4px;">
+            <div class="showMapBtn" style="padding-top: 4px">
               <label class="mustTip">*</label>
               <el-button
                 type="primary"
@@ -632,15 +627,10 @@
         <div v-show="partyTypePerson == '1'">
           <div :class="cateNameType ? 'itemOne' : 'itemOne cateNameType'">
             <el-form-item v-if="cateNameType" label="从业资格证号">
-              <el-input
-                v-model="inforForm.partyEcertId"
-              ></el-input>
+              <el-input v-model="inforForm.partyEcertId"></el-input>
             </el-form-item>
-            <el-form-item v-else label="船舶船员适任证号"
-            >
-              <el-input
-                v-model="inforForm.shipPeopleId"
-              ></el-input>
+            <el-form-item v-else label="船舶船员适任证号">
+              <el-input v-model="inforForm.shipPeopleId"></el-input>
             </el-form-item>
           </div>
         </div>
@@ -746,7 +736,7 @@
                 <el-form-item label="与案件关系">
                   <el-select
                     v-model="driverOrAgentInfo.relationWithCase"
-                    :disabled="index == 0 && relationWithPartyIsOne[index]"
+                    :disabled="index == 0 && isSamePerson(driverOrAgentInfo)"
                   >
                     <el-option
                       v-for="item in allRelationWithCase"
@@ -796,7 +786,7 @@
               <el-form-item label="姓名">
                 <el-input
                   v-model="driverOrAgentInfo.name"
-                  :disabled="index == 0 && relationWithPartyIsOne[index]"
+                  :disabled="index == 0 && isSamePerson(driverOrAgentInfo)"
                 ></el-input>
               </el-form-item>
             </div>
@@ -811,19 +801,19 @@
                     changePartyIdType2(driverOrAgentInfo.zhengjianNumber, index)
                   "
                   class="input-with-select hasMargintop"
-                  :disabled="index == 0 && relationWithPartyIsOne[index]"
+                  :disabled="index == 0 && isSamePerson(driverOrAgentInfo)"
                 >
                   <el-select
                     slot="prepend"
                     v-model="driverOrAgentInfo.zhengjianType"
-                    :disabled="index == 0 && relationWithPartyIsOne[index]"
+                    :disabled="index == 0 && isSamePerson(driverOrAgentInfo)"
                   >
                     <el-option
                       v-for="item in credentialType"
                       :key="item.value"
                       :label="item.label"
                       :value="item.value"
-                      :disabled="index == 0 && relationWithPartyIsOne[index]"
+                      :disabled="index == 0 && isSamePerson(driverOrAgentInfo)"
                     ></el-option>
                   </el-select>
                 </el-input>
@@ -835,7 +825,7 @@
               <el-form-item label="性别">
                 <el-select
                   v-model="driverOrAgentInfo.sex"
-                  :disabled="index == 0 && relationWithPartyIsOne[index]"
+                  :disabled="index == 0 && isSamePerson(driverOrAgentInfo)"
                 >
                   <el-option :value="0" label="男"></el-option>
                   <el-option :value="1" label="女"></el-option>
@@ -847,7 +837,7 @@
                 <el-input
                   v-model="driverOrAgentInfo.age"
                   type="number"
-                  :disabled="index == 0 && relationWithPartyIsOne[index]"
+                  :disabled="index == 0 && isSamePerson(driverOrAgentInfo)"
                   @change="noFueA(driverOrAgentInfo.age)"
                 ></el-input>
               </el-form-item>
@@ -856,7 +846,7 @@
               <el-form-item label="联系电话">
                 <el-input
                   v-model="driverOrAgentInfo.tel"
-                  :disabled="index == 0 && relationWithPartyIsOne[index]"
+                  :disabled="index == 0 && isSamePerson(driverOrAgentInfo)"
                   @blur="blur2($event.target.value)"
                 ></el-input>
               </el-form-item>
@@ -883,7 +873,7 @@
                     value: 'name',
                   }"
                   filterable
-                  :disabled="index == 0 && relationWithPartyIsOne[index]"
+                  :disabled="index == 0 && isSamePerson(driverOrAgentInfo)"
                   @change="
                     (params) =>
                       handleSelectDriverOrAgent(
@@ -899,7 +889,7 @@
               <el-form-item label="详细地址">
                 <el-input
                   v-model="driverOrAgentInfo.adress"
-                  :disabled="index == 0 && relationWithPartyIsOne[index]"
+                  :disabled="index == 0 && isSamePerson(driverOrAgentInfo)"
                 ></el-input>
               </el-form-item>
             </div>
@@ -907,7 +897,7 @@
               <el-form-item label="邮编">
                 <el-input
                   v-model="driverOrAgentInfo.adressCode"
-                  :disabled="index == 0 && relationWithPartyIsOne[index]"
+                  :disabled="index == 0 && isSamePerson(driverOrAgentInfo)"
                   @blur="blur3($event.target.value)"
                 ></el-input>
               </el-form-item>
@@ -918,7 +908,7 @@
               <el-form-item label="工作单位">
                 <el-input
                   v-model="driverOrAgentInfo.company"
-                  :disabled="index == 0 && relationWithPartyIsOne[index]"
+                  :disabled="index == 0 && isSamePerson(driverOrAgentInfo)"
                 ></el-input>
               </el-form-item>
             </div>
@@ -926,25 +916,23 @@
               <el-form-item label="职务">
                 <el-input
                   v-model="driverOrAgentInfo.position"
-                  :disabled="index == 0 && relationWithPartyIsOne[index]"
+                  :disabled="index == 0 && isSamePerson(driverOrAgentInfo)"
                 ></el-input>
               </el-form-item>
             </div>
           </div>
           <div>
             <div :class="cateNameType ? 'itemOne' : 'itemOne cateNameType'">
-              <el-form-item v-if="cateNameType" label="从业资格证号"
-              >
+              <el-form-item v-if="cateNameType" label="从业资格证号">
                 <el-input
                   v-model="driverOrAgentInfo.zigeNumber"
-                  :disabled="index == 0 && relationWithPartyIsOne[index]"
+                  :disabled="index == 0 && isSamePerson(driverOrAgentInfo)"
                 ></el-input>
               </el-form-item>
-              <el-form-item v-else label="船舶船员适任证号"
-              >
+              <el-form-item v-else label="船舶船员适任证号">
                 <el-input
                   v-model="driverOrAgentInfo.shipPeopleId"
-                  :disabled="index == 0 && relationWithPartyIsOne[index]"
+                  :disabled="index == 0 && isSamePerson(driverOrAgentInfo)"
                 ></el-input>
               </el-form-item>
             </div>
@@ -1134,7 +1122,9 @@
         <div>
           <div class="itemThird">
             <el-form-item label="总长">
-              <el-input v-model="inforForm.shipLength"><template slot="append">m</template></el-input>
+              <el-input v-model="inforForm.shipLength"
+                ><template slot="append">m</template></el-input
+              >
             </el-form-item>
           </div>
           <div class="itemThird">
@@ -1162,10 +1152,7 @@
                 class="input-with-select hasMargintop"
               >
                 <template slot="append">mm</template>
-                <el-select
-                  slot="prepend"
-                  v-model="inforForm.shipPlace"
-                >
+                <el-select slot="prepend" v-model="inforForm.shipPlace">
                   <el-option
                     v-for="item in loadLineList"
                     :key="item.name"
@@ -1185,11 +1172,13 @@
           </div>
         </div>
       </div>
-      <div v-else-if="inforForm.zfmlId == '1002000500000000'"
+      <div
+        v-else-if="inforForm.zfmlId == '1002000500000000'"
         class="caseFormBac"
         id="link_3"
         ref="link_3"
-        @mousewheel="scrool3">
+        @mousewheel="scrool3"
+      >
         <p>港口信息</p>
         <div>
           <div class="item">
@@ -1851,25 +1840,25 @@ export default {
         partyManagerPositions: "",
         partyUnitAddress: "",
         vehicleShipId: "",
-        harbourWorkPlace:"",
-        harbourType:"",
-        harbourPlace:"",
-        harbourName:"",
-        shipPlace:"",
-        shipLoadLine:"",
-        shipHeight:"",
-        shipWidth:"",
-        shipLength:"",
-        shipTransportId:"",
-        shipPower:"",
-        shipWeight:"",
-        shipType:"",
-        shipName:"",
-        shipPeopleId:"",
-        harbourLicense:"",
-        shipNumber:"",
+        harbourWorkPlace: "",
+        harbourType: "",
+        harbourPlace: "",
+        harbourName: "",
+        shipPlace: "",
+        shipLoadLine: "",
+        shipHeight: "",
+        shipWidth: "",
+        shipLength: "",
+        shipTransportId: "",
+        shipPower: "",
+        shipWeight: "",
+        shipType: "",
+        shipName: "",
+        shipPeopleId: "",
+        harbourLicense: "",
+        shipNumber: "",
         vehicleIdColor: "",
-        portTypeList:"",
+        portTypeList: "",
         vehicleShipType: "",
         brand: "",
         ccertId: "",
@@ -2051,7 +2040,7 @@ export default {
           company: "",
           position: "",
           zigeNumber: "",
-          shipPeopleId:""
+          shipPeopleId: "",
         },
       ],
       driverOrAgentInfo: {
@@ -2118,7 +2107,7 @@ export default {
       ],
       shipType: [],
       loadLineList: [],
-      portTypeList:[],
+      portTypeList: [],
       dateShow: false,
       showTrailer: false, //是否显示挂车信息
       judgFreedomList: [], //自由裁量列表
@@ -2335,9 +2324,9 @@ export default {
       let val = this.driverOrAgentInfoList[0].relationWithParty;
       if (val === "同一人" && this.partyTypePerson == "1") {
         // this.driverOrAgentInfoList[0].relationWithCase = "当事人";
-        if(this.cateNameType){
+        if (this.cateNameType) {
           this.driverOrAgentInfoList[0].relationWithCase = "当事人(驾驶人)";
-        }else{
+        } else {
           this.driverOrAgentInfoList[0].relationWithCase = "当事人(船员)";
         }
         this.driverOrAgentInfoList[0].name = this.inforForm.party;
@@ -2362,9 +2351,9 @@ export default {
       let val = this.driverOrAgentInfoList[index].relationWithParty;
       if (val === "同一人") {
         console.log(val);
-        if(this.cateNameType){
+        if (this.cateNameType) {
           this.driverOrAgentInfoList[index].relationWithCase = "当事人(驾驶人)";
-        }else{
+        } else {
           this.driverOrAgentInfoList[index].relationWithCase = "当事人(船员)";
         }
         this.driverOrAgentInfoList[index].name = this.inforForm.party;
@@ -2388,8 +2377,12 @@ export default {
           index
         ].company = this.inforForm.partyUnitPosition;
         this.driverOrAgentInfoList[index].position = this.inforForm.occupation;
-        this.driverOrAgentInfoList[index].zigeNumber = this.inforForm.partyEcertId;
-        this.driverOrAgentInfoList[index].shipPeopleId = this.inforForm.shipPeopleId;
+        this.driverOrAgentInfoList[
+          index
+        ].zigeNumber = this.inforForm.partyEcertId;
+        this.driverOrAgentInfoList[
+          index
+        ].shipPeopleId = this.inforForm.shipPeopleId;
         this.relationWithPartyIsOne[index] = true;
       } else {
         this.driverOrAgentInfoList[index].relationWithCase = "";
@@ -2409,6 +2402,9 @@ export default {
         this.relationWithPartyIsOne[index] = false;
       }
     },
+    isSamePerson(item) {
+      return item.relationWithParty == "同一人" ? true : false;
+    },
     //添加其他人信息
     addDriverOrAgent() {
       var item = {
@@ -2426,7 +2422,7 @@ export default {
         company: "",
         position: "",
         zigeNumber: "",
-        shipPeopleId:"",
+        shipPeopleId: "",
       };
       this.driverOrAgentInfoList.push(item);
     },
@@ -2602,7 +2598,7 @@ export default {
     },
     //提交信息
     submitInfo(state) {
-      console.log("提交信息：", this.inforForm)
+      console.log("提交信息：", this.inforForm);
       if (!this.inforForm.latitudeAndLongitude) {
         this.$message("请获取坐标！");
         return;
@@ -2780,7 +2776,6 @@ export default {
       let _this = this;
       this.$store.dispatch("getCaseBasicInfo", data).then(
         (res) => {
-         
           let dataArray = [];
           _this.driverOrAgentInfoList = JSON.parse(res.data.agentPartyEcertId);
           if (res.data.provincesAddress) {
@@ -2902,7 +2897,12 @@ export default {
         .catch((err) => {
           console.log(err);
         });
-      if (this.inforForm.zfml == "水路运政" || this.inforForm.zfml == "港口行政" || this.inforForm.zfml == "航道行政" || this.inforForm.zfml == "海事行政") {
+      if (
+        this.inforForm.zfml == "水路运政" ||
+        this.inforForm.zfml == "港口行政" ||
+        this.inforForm.zfml == "航道行政" ||
+        this.inforForm.zfml == "海事行政"
+      ) {
         this.cateNameType = false;
       }
     },
@@ -3642,7 +3642,12 @@ export default {
 
     this.inforForm.trailerColor = "1";
 
-    if (someCaseInfo.cateName == "水路运政" || someCaseInfo.cateName == "港口行政" || someCaseInfo.cateName == "航道行政" || someCaseInfo.cateName == "海事行政") {
+    if (
+      someCaseInfo.cateName == "水路运政" ||
+      someCaseInfo.cateName == "港口行政" ||
+      someCaseInfo.cateName == "航道行政" ||
+      someCaseInfo.cateName == "海事行政"
+    ) {
       this.cateNameType = false;
     }
     // 鼠标滚动

@@ -1,19 +1,16 @@
 <template>
   <section class="login">
     <transition name="form-fade" mode="in-out">
-      <section class="form_contianer" v-show="showLogin">
-        <!-- <div class="login_logo"><img src="../../../src/assets/image/main/logo.png" alt=""><span>治超联网监管系统</span></div>-->
-        <div class="leftC">
-          <img :src="loginImgSrc" alt="" @load='loadImg'>
-          <div class="leftC_title">
-            <img :src="'./static/images/img/login/logo1.png'" alt=""> {{systemTitleLogin}}
-          </div>
+      <section class="form_contianer" v-show="showLogin" id="loginBgGS">
+        <div class="loginTitle">
+          <img src="../../../static/images/img/login/loginTitleJX.png" alt="">
         </div>
         <div class="rightC" v-if="!resetFlag&&!editFlag">
           <div class="form_box">
             <span class="title" :class="check  ? 'checkText' : '' " @click="changeType(1)">账号密码</span>
             <span class="title" :class="!check  ? 'checkText' : '' " @click="changeType(2)">二维码</span>
             <div class="formC1" v-if="check">
+
 
               <el-form :model="loginForm" :rules="rules" ref="loginForm" class="demo-ruleForm">
                 <el-form-item prop="username">
@@ -41,9 +38,9 @@
                     <div v-show="errorPwd" class="error-pwd">{{errorPwd}}</div>
                   </el-collapse-transition>
                 </div>
-                <!-- <el-form-item class="codeInputBox">
-                  <vue-simple-verify ref="verify" :width='420' tips='向右滑动完成验证' @success="pass()" />
-                </el-form-item> -->
+                <el-form-item class="codeInputBox" v-if="isShow">
+                  <vue-simple-verify ref="verify" :width='386' tips='向右滑动完成验证' @success="pass()" />
+                </el-form-item>
                 <div class="forgetPass">
                   <div v-show="errorMessage" class="error-pwd">{{errorMessage}}</div>
                 </div>
@@ -52,13 +49,14 @@
                   <el-button type="primary" @click="submitLogin('loginForm')">登录</el-button>
                 </div>
                 <div class="login_btm">
-                  <el-link type="primary" :underline="false" class="left_float" :href="appDownHref" download="执法app">APP下载</el-link>
-                  <el-link type="primary" :underline="false" class="left_float margin24 wechat_box">
-                    <span @click="weChat">微信公众号</span>
-                    <div class="wechat" v-if="weChatFlag">
+                  <el-link type="primary" :underline="false" class="left_float" :href="appDownHref" download="执法app">APP下载</el-link> 
+                  <!-- <el-link type="primary" :underline="false" class="left_float"  download="执法app">APP下载</el-link>  -->
+                  <div class="left_float margin24 wechat_box">
+                    <span @mouseenter="enter" @mouseleave="leave" class="wechat-text">微信公众号</span>
+                    <div class="wechat" v-show="weChatFlag">
                       <img src="../../../static/images/img/login/weChat.png" alt="">
                     </div>
-                  </el-link>
+                  </div>
                   <el-link type="primary" :underline="false" class="right_float" @click="resetChange(true)">忘记密码</el-link>
 
                 </div>
@@ -74,6 +72,7 @@
             </div>
           </div>
           <div class="footer">
+            <div class="myline"></div>
             <center>
               <span class="blue-text">使用教程</span>
               |
@@ -110,6 +109,7 @@
             </div>
           </div>
           <div class="footer">
+            
             <center>
               <span class="blue-text">使用教程</span>
               |
@@ -149,11 +149,8 @@
                 <div>
                   <el-button type="primary" @click="editPwd('eidtForm')">修改密码</el-button>
                 </div>
-
               </el-form>
-
             </div>
-
           </div>
           <div class="footer">
             <center>
@@ -163,6 +160,7 @@
             </center>
           </div>
         </div>
+        <p class="loginFooterJX">版权所有 江西省交通运输厅</p>
       </section>
     </transition>
   </section>
@@ -184,8 +182,9 @@ import {
 import {
   getDictListDetailByNameApi, hasUsernameLoginApi, updatePassWordApi, appDownloadApi,
 } from "@/api/system";
-import { encryption } from "@/common/js/cryptoAes";
+import { encryption ,encrypt} from "@/common/js/cryptoAes";
 export default {
+  name:'logings',
   data() {
     return {
       formLayout: "vertical",
@@ -245,8 +244,8 @@ export default {
           { pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, message: '密码至少八个字符，至少一个字母和一个数字', trigger: 'blur' }
         ],
         repetPassword: [
-          { required: true, message: '请重复输入新密码', trigger: 'blur' },
-          { pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, message: '密码至少八个字符，至少一个字母和一个数字', trigger: 'blur' }
+          // { required: true, message: '请重复输入新密码', trigger: 'blur' },
+          // { pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, message: '密码至少八个字符，至少一个字母和一个数字', trigger: 'blur' }
         ],
       },
       hasUserError: false,
@@ -264,27 +263,12 @@ export default {
       systemTitleLogin: null,
       loginImgSrc: '',
       appDownHref: '',
+      isShow: true,//是否有登录滑动验证
     };
   },
   computed: { ...mapGetters(['systemTitle']) },
+  inject: ['reload'],
   methods: {
-
-    //获取验证码
-    getCaptcha() {
-      let _this = this
-      this.$store.dispatch("getCaptcha").then(
-        res => {
-          let captcha = res.data;
-          _this.captchaId = captcha.split('::')[0];
-
-          //  _this.captchaImg = drawCodeImage + _this.captchaId;
-          _this.getCaptchaImgsrc()
-        },
-        err => {
-          console.log(err)
-        }
-      )
-    },
     // 切换登录方式
     changeType(type) {
       console.log(type)
@@ -296,36 +280,22 @@ export default {
       }
 
     },
-
-    getCaptchaImgsrc() {
-      console.log('this.captchaId', this.captchaId)
-      let _this = this
-      this.$store.dispatch("getCapImgSrc", this.captchaId).then(
-        res => {
-          console.log(res);
-          let a = 'data:image/png;base64,' + btoa(
-            new Uint8Array(res)
-              .reduce((data, byte) => data + String.fromCharCode(byte), '')
-          );
-          console.log(a);
-          _this.captchaImg = a;
-
-        },
-        err => {
-          console.log(err)
-        }
-      )
-    },
     //登录
     submitLogin(formName) {
       let _this = this
-      // this.$store.commit(types.SET_AUTHTOKEN, 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsaWNlbnNlIjoiTWFkZSBCeSBDQVRTSUMiLCJ1c2VyX25hbWUiOiJ7XCJhdmF0YXJcIjpcImh0dHBzOi8vaS5sb2xpLm5ldC8yMDE5LzA0LzI4LzVjYzVhNzFhNmUzYjYucG5nXCIsXCJkZXBhcnRtZW50SWRcIjpcIjJcIixcImlkXCI6XCI2ODIyNjU2MzM4ODYyMDhcIixcIm1vYmlsZVwiOlwiMTg3ODIwNTkwMzhcIixcIm5pY2tOYW1lXCI6XCJnZmhkZ2huZmdqXCIsXCJvcmdhbklkXCI6XCIxXCIsXCJwYXNzd29yZFwiOlwiJDJhJDEwJHNzR0YuT0dQMTJDcldGMlJUVWNOZGUwZzUxSGgwckc2eTlHZTVGejZDd25rRWhreHV6Um95XCIsXCJwYXNzd29yZFN0YXR1c1wiOjAsXCJzZXhcIjpcIueUt1wiLFwic3RhdHVzXCI6MCxcInR5cGVcIjoxLFwidXNlcm5hbWVcIjpcImFkbWluXCJ9Iiwic2NvcGUiOlsic2VydmVyIl0sImV4cCI6MTU4MzkzMzIyMCwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdLCJqdGkiOiIwNjQzOWRkOC0yZWQ3LTQzNzUtODgzZC04ZTI3ODJhNjBmNWIiLCJjbGllbnRfaWQiOiJjYXRzaWMifQ.Btlg5kx2xQY7xCbHuODly-hNICluoD-SbrA0S7lHBEE'); //token
-      // _this.getMenu();
       this.$refs[formName].validate((valid) => {
         if (valid) {
+          if(!_this.isShow){
+            _this.success=true;
+          }
           // 验证码
-          // if (_this.success) {
-            let values = _this.loginForm;
+          if (_this.success) {
+            // let values = _this.loginForm;
+            let values={
+              username: _this.loginForm.username,
+              password: encrypt(_this.loginForm.password), 
+              code: ''
+            }
             values.captchaId = _this.captchaId;
 
             _this.$store.dispatch("loginIn", values).then(
@@ -341,30 +311,15 @@ export default {
                 //   _this.$util.initUser(_this);
                 _this.success = false;
                 //   this.$store.commit('setShowQZBtn', true)
-
-                //设置默认openTab
-                //   this.$store.dispatch("addTabs", {name:'case_handle_home_index',title:'案件办理首页',route:'/index',headActiveNav:"caseHandle-menu-case_handle_home_index"});
-                //设置是否签章
-
-                // this.$store.dispatch("addTabs", {name:'case_handle_home_index',title:'案件办理首页',route:'/index',headActiveNav:"caseHandle-menu-case_handle_home_index"});
-
-
-              },
-              // error => {
-              //   console.log('error',error);
-              //    this.$message({
-              //     type: "error",
-              //     message: error.message
-              //   });
-              // }
+              }
             );
-          // }
-          // else {
-          //   _this.errorMessage = '验证错误,请重试，3秒后自动消失'
-          //   setTimeout(() => {
-          //     _this.errorMessage = ""
-          //   }, 3000)
-          // }
+          }
+          else {
+            _this.errorMessage = '验证错误,请重试，3秒后自动消失'
+            setTimeout(() => {
+              _this.errorMessage = ""
+            }, 3000)
+          }
         }
         else {
           this.errorPwd = '用户名或密码错误，请重新输入，3秒后自动消失'
@@ -381,11 +336,7 @@ export default {
       let _this = this
       this.$store.dispatch("getMenu").then(
         res => {
-          // ...res.data,
           _this.menuList = res.data;
-
-          // _this.menuList = [...menuList];
-          console.log()
           _this.$store.commit("SET_MENU", _this.menuList);
           _this.$store.commit("SET_ACTIVE_INDEX_STO", "law_supervise_lawSupervise");
           _this.$store.commit('set_Head_Active_Nav', "lawSupervise-menu-law_supervise_lawSupervise");
@@ -399,11 +350,8 @@ export default {
     //获取当前登录用户的信息
     getCurrentUser() {
       let _this = this;
-      new Promise((resolve, reject) => {
+      // new Promise((resolve, reject) => {
         getCurrentUserApi().then(res => {
-          console.log("当前用户信息", res);
-          // debuggerdebugger
-
           if (res.data.passwordStatus == '0') {
             // 判断是否修改过密码
             this.$message({ message: '当前账号首次登录，请重新设置密码', type: 'warning' });
@@ -422,7 +370,7 @@ export default {
         }, err => {
           console.log(err);
         })
-      })
+      // })
     },
     blueUsername() {
       this.hasUserError = false;
@@ -430,10 +378,6 @@ export default {
     bluePassword() {
       this.haspasswordError = false;
     },
-    // gotoRegister(){
-    //   console.log(1111);
-    //   this.$router.push('/register');
-    // }
     pass() {
       this.success = true;
       this.errorMessage = ''
@@ -445,10 +389,11 @@ export default {
         _this.errorMessage = '验证失效,请重新验证'
       }, 30000);
     },
-    // 微信公众号
-    weChat() {
-      console.log('we')
-      this.weChatFlag = !this.weChatFlag;
+    enter(){
+      this.weChatFlag = true
+    },
+    leave(){
+      this.weChatFlag = false
     },
     // 忘记密码
     resetChange(flag) {
@@ -540,7 +485,7 @@ export default {
       let imgRes = '';
       try {
         imgRes = await getDictListDetailByNameApi('loginBg');
-        this.$store.dispatch("setLoadingState", { flag: true, type: 'loadFull' });
+        // this.$store.dispatch("setLoadingState", { flag: true, type: 'loadFull' });
         this.loginImgSrc = './static/images/img/login/' + imgRes.data[0].name + '.jpg';
 
       } catch (error) {
@@ -571,12 +516,14 @@ export default {
     },
   },
   async created() {
+    this.$store.dispatch("setLoadingState", { flag: true, type: 'loadFull' });
     await getHost();
     await this.getSystemData();
     this.getAppDownHref();
   },
   mounted() {
     this.showLogin = true;
+    this.isShow = true;
   },
   components: {
     VueSimpleVerify
@@ -584,9 +531,6 @@ export default {
   destroyed() {
     clearTimeout(this.timeOutFlag);
   }
-  // created: function () {
-  //   this.getCaptcha();
-  // }
 };
 </script>
 
@@ -594,5 +538,103 @@ export default {
 </style>
 <style lang="scss" src="@/assets/css/verify.scss">
 </style>
+<style lang="scss">
+ #loginBgGS{
+   background-image: url('../../../static/images/img/login/loginImgJX.png');
+   background-repeat: no-repeat;
+    background-size: cover;
+    display: block;
+    position: relative;
+    margin-bottom: 0;
+    .loginTitle{
+      position: absolute;
+      width: 100%;
+      top: 8%;
+      img{
+        width: 35%;
+      }
+    }
+    .loginFooterJX{
+      position: absolute;
+      bottom: 5px;
+      color: #999;
+      left: 0;
+      right: 0;
+    }
+    .rightC{
+      margin-top: 12.5%;
+      background: #fff;
+      margin-right: 5%;
+      width: 480px;
+      height: 500px;
+      box-shadow: 0 6px 27px 0px rgba(30,46,77,0.3);
+      border-radius: 8px;
+      .form_box{
+        min-height: auto;
+        width: 386px;
+        .back{
+          display: none;
+        }
+      }
+      input:-webkit-autofill{
+        -webkit-box-shadow:0 0 0 1000px white inset !important;
+      }
+      .title{
+        margin-bottom: 20px;
+        margin-top: 45px;
+        font-size: 20px;
+        color:#828795;
+      }
+      .checkText{
+        font-size: 26px;
+        color: #242729;
+      }
+      .formC1 {
+        .el-input .el-input__prefix{
+          top: 3px;
+          left: 8px;
+        }
+        .el-input__inner{
+          border-top: 1px solid #DAE0E8;
+          border-bottom: 1px solid #DAE0E8;
+          border-left: 1px solid #DAE0E8;
+          border-right: 1px solid #DAE0E8;
+        }
+        button{
+          margin-top: 0;
+        }
+        .login_btm{
+          height: 70px;
+        }
+        .wechat_box{
+          height: 70px;
+          .wechat{
+            width:80px;
+            height: 80px;
+            img{
+              width: 100%;
+            }
+          }
+        }
+      }
+      
+    }
+    .footer{
+      margin-top: 0;
+      .myline{
+        height: 1px;
+        background: #4B4F5A;
+        opacity: 0.1;
+        width: 386px;
+        margin: auto;
+        margin-bottom: 25px;
+      }
+      .blue-text{
+        color: #999999;
+      }
+    }
+ }
+</style>
+
 
 

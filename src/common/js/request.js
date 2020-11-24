@@ -103,6 +103,8 @@ service.interceptors.request.use(
           // console.log('response.data',response)
           //解密
           //  response.data.data = JSON.parse(decrypt(response.data.data))
+          console.log('response.data',response)
+
           return response.data;
         } else if (
           response.data.code == 400 || response.data.code == 500) {

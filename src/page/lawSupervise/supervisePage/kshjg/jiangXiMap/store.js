@@ -231,7 +231,7 @@ export default {
         ['执法车辆', 2],
         ['执法船舶', 3],
         ['事件地点', 5],
-        ['非现场站点', 4],
+        ['非现场站点', 4]
       ])
       let param = {}, type = typeMap.get(name)
       if (type === 5) {

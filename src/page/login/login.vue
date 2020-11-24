@@ -1,7 +1,9 @@
 <template>
-  <div>
+  <div style="height:100%">
     <!-- 甘肃 -->
     <loginGS v-if="province == 'GS'"></loginGS>
+    <!-- 江西 -->
+    <loginJX v-if="province == 'JX'"></loginJX>
     <!-- 标准 -->
     <loginBZ v-else></loginBZ>
   </div>
@@ -12,6 +14,8 @@
 //甘肃登录页
 import loginGS from './loginGS.vue';
 import loginBZ from './loginBZ.vue';
+import loginJX from './loginJX.vue';
+
 import {
   getDictListDetailByNameApi
 } from "@/api/system";
@@ -25,7 +29,8 @@ export default {
   // computed: { ...mapGetters(['systemTitle']) },
   components:{
     loginGS,
-    loginBZ
+    loginBZ,
+    loginJX
   },
   methods: {
     async whichProvince(){

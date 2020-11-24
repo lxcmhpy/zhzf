@@ -73,7 +73,7 @@ export default {
         [4, '/static/images/img/lawSupervise/map_o_gud.png'],
         [5, '/static/images/img/lawSupervise/map_didian.png']
       ]), // 各类型所对应的点位图标
-      c: null, // 地图组件的 this
+      page: null, // 地图组件的 this
       map: null,
       center: [115.871344, 28.710709],
       searchWindowData: {
@@ -400,15 +400,15 @@ export default {
     },
 
   },
-  activated() {
+  created() {
     this.getTree()
   },
   mounted(){
-      this.layerUrl = iLocalStroage.gets('CURRENT_BASE_URL').MAP_HOST+'/{z}/{y}/{x}';
-      this.organId = iLocalStroage.gets("userInfo").organId;
-      this.$nextTick(() => {
-          this.initWxPhone(iLocalStroage.gets("userInfo").id)
-      })
+    this.layerUrl = iLocalStroage.gets('CURRENT_BASE_URL').MAP_HOST+'/{z}/{y}/{x}';
+    this.organId = iLocalStroage.gets("userInfo").organId;
+    this.$nextTick(() => {
+      this.initWxPhone(iLocalStroage.gets("userInfo").id)
+    })
   }
 }
 </script>
