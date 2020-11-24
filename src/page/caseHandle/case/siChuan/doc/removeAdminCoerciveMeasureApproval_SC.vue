@@ -264,10 +264,8 @@
               <div class="pdf_seal alginLast" style="white-space:nowrap;height:20%;width:auto;margin-bottom:10px;margin-right:80px;">
                 <p>执法人员签名:{{docData.lawOfficeName}}</p>
                 <p>
-                  <!-- <el-date-picker v-model="docData.lawOfficeTime" format=" yyyy年MM月dd日" value-format="yyyy-MM-dd"
-                    class="alginLast" placeholder="    年  月  日" type="date" @blur="starttime"></el-date-picker> -->
-                    <span v-if="docData.lawOfficeTime">{{docData.lawOfficeTime}}</span>
-                    <span v-else>    年  月  日</span>
+                  <el-date-picker v-model="docData.lawOfficeTime" format=" yyyy年MM月dd日" value-format="yyyy-MM-dd"
+                    class="alginLast" placeholder="    年  月  日" type="date" @blur="starttime"></el-date-picker>
                 </p>
               </div>
             </td>
