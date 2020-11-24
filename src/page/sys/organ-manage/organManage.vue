@@ -47,13 +47,14 @@
       <div class="handelBtn">
         <div>子机构列表</div>
         <div>
-          <el-dropdown split-button type="primary" size="medium" @click="addOrgan">
+          <el-button type="primary" @click="addOrgan">新增机构</el-button>
+          <!-- <el-dropdown split-button type="primary" size="medium" @click="addOrgan">
             <i class="iconfont law-icon_weihu"></i>新增机构
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item>批量添加</el-dropdown-item>
               <el-dropdown-item>批量导入</el-dropdown-item>
             </el-dropdown-menu>
-          </el-dropdown>
+          </el-dropdown> -->
         </div>
       </div>
       <!-- <div class="tableBox"> -->
