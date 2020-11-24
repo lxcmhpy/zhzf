@@ -1,5 +1,5 @@
 <template v-if="caseInfo">
-  <div>
+  <div class="file-dir-container">
     <el-dialog
       custom-class="leftDialog leftDialog2 archiveCatalogueBox documentFormCat margin-bottom0"
       :visible.sync="visible"
@@ -27,10 +27,10 @@
             v-for="(item, index) in documentList"
             :key="index"
             @click="alertPDF(item)"
-            :class="!item.storageId && item.name == '备考表' ? 'activeTd' : ''"
+            :class="!item.storageId ? 'activeTd' : ''"
           >
             <td>{{ index + 1 }}</td>
-            <td>{{ item.name ? item.name : item.evName }}</td>
+            <td>{{ item.docName }}</td>
             <td>{{ item.page }}</td>
           </tr>
         </table>
@@ -111,3 +111,28 @@ export default {
   }
 };
 </script>
+<style lang="scss">
+.file-dir-container {
+  table {
+    text-align: center;
+    background: #fdffff;
+    td {
+      padding: 10px 0;
+      min-height: 38px;
+      border: 1px solid #7f8185;
+      cursor: pointer;
+    }
+    tr {
+      td:nth-child(1),
+      td:nth-child(3) {
+        width: 40px;
+      }
+    }
+    .activeTd {
+      td {
+        color: red;
+      }
+    }
+  }
+}
+</style>
