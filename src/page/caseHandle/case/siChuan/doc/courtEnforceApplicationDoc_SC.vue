@@ -112,6 +112,7 @@
               format="yyyy年MM月dd日"
               placeholder="    年  月  日"
               value-format="yyyy-MM-dd"
+              :clearable="false"
             ></el-date-picker>
           </el-form-item>
         </div>
