@@ -129,7 +129,7 @@ export default {
             });
           _this.otherFileList.push({
             photoUrl: url,
-            name: item.fileName,
+            name: item.name,
             docId: item.docId,
             storageId: item.storageId,
           });
