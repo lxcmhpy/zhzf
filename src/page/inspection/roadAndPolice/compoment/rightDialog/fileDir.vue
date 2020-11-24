@@ -66,7 +66,7 @@ export default {
       this.visible = true;
       // debugger
       if (this.inspectionOverWeightId && this.documentList.length === 0) {
-        this.getDocListById();
+        this.getDocListByIdFn();
       }
     },
     //关闭弹窗的时候清除数据
@@ -75,7 +75,7 @@ export default {
     },
 
     //获取卷宗目录列表
-    getDocListById() {
+    getDocListByIdFn() {
       getDocListByIdApi(this.inspectionOverWeightId).then(res => {
         console.log(" -> res", res);
         this.documentList = res.data;
@@ -88,16 +88,23 @@ export default {
     },
     //点击卷宗目录
     handleClickDocName(item) {
-      console.log("🚀 ~ file: fileDir.vue ~ line 91 ~ handleClickDocName ~ item", item)
-      //   if (this.$route.name != "case_handle_archiveCover") {
-      //     this.$router.push({
-      //       name: "case_handle_archiveCover",
-      //       params: { clickData: JSON.stringify(item), mulvList: this.caseList }
-      //     });
-      //     return;
-      //   }
-      //   this.$store.commit("setClickArchiveCatalogue", item);
-      //   this.$store.commit("setArchiveCatalogueList", this.caseList);
+      console.log(
+        "🚀 ~ file: fileDir.vue ~ line 91 ~ handleClickDocName ~ item",
+        item
+      );
+      const routerMap = {
+        "卷宗封面【青海检查】": "inspection_overloadDocumentDoc_QH"
+      };
+      if (item.storageId) {
+        this.$router.push({
+          name: "inspection_overload_pdf",
+          params: { id: inspection_overload_pdf, storageId: item.storageId }
+        });
+      } else {
+        this.$router.push({
+          name: routerMap[item.docName]
+        });
+      }
     },
 
     //设置弹窗左偏移
