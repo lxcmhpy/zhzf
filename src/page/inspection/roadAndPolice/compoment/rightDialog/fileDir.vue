@@ -26,7 +26,7 @@
           <tr
             v-for="(item, index) in documentList"
             :key="index"
-            @click="alertPDF(item)"
+            @click="handleClickDocName(item)"
             :class="!item.storageId ? 'activeTd' : ''"
           >
             <td>{{ index + 1 }}</td>
@@ -37,7 +37,7 @@
       </div>
       <!-- <span slot="footer" class="dialog-footer">
         <el-button
-          @click="routerArchiveCatalogueDetail"
+          @click="handleOrder"
           type="primary"
           icon="iconfont law-paixu"
         >
@@ -64,6 +64,10 @@ export default {
   methods: {
     showModal() {
       this.visible = true;
+      // debugger
+      if (this.inspectionOverWeightId && this.documentList.length === 0) {
+        this.getDocListById();
+      }
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
@@ -71,19 +75,20 @@ export default {
     },
 
     //获取卷宗目录列表
-    getDocListByIdApi() {
+    getDocListById() {
       getDocListByIdApi(this.inspectionOverWeightId).then(res => {
-        console.log("getDocListByIdApi -> res", res);
+        console.log(" -> res", res);
         this.documentList = res.data;
       });
     },
 
     //点击排序按钮
-    // routerArchiveCatalogueDetail() {
-    //   this.$router.push({ name: "case_handle_archiveCatalogueDetail" });
-    // },
-    //点击卷宗目录列表
-    alertPDF(item) {
+    handleOrder() {
+      this.$router.push({ name: "inspection_file_order_page" });
+    },
+    //点击卷宗目录
+    handleClickDocName(item) {
+      console.log("🚀 ~ file: fileDir.vue ~ line 91 ~ handleClickDocName ~ item", item)
       //   if (this.$route.name != "case_handle_archiveCover") {
       //     this.$router.push({
       //       name: "case_handle_archiveCover",
@@ -107,7 +112,6 @@ export default {
   mounted() {
     //设置弹窗遮罩层不要遮到右侧快捷菜单
     this.setRight();
-    this.getDocListByIdApi();
   }
 };
 </script>
