@@ -23,10 +23,10 @@
       <div class="userList caseAndEvidenceListDiaClass">
         <li
           v-for="(item, index) in fileList"
-          :label="item.storageId"
-          :key="item.storageId"
+          :label="item.docName"
+          :key="item.docName"
           style="font-size: 16px;line-height: 36px;cursor: pointer;"
-          @click="handleClickDocName(item)"
+          @click="handleClickDocument(item)"
         >
           <span class="name">{{ index + 1 }}、</span>
           <span class="name">{{ item.docName }}</span>
@@ -41,9 +41,7 @@
 <script>
 import { mapGetters } from "vuex";
 import {
-  getTemplateDocList,
-  getDocListById,
-  findCarInfoFileByIdApi
+  getDocListByIdApi
 } from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
 export default {
@@ -65,7 +63,9 @@ export default {
       }
     },
 
-    handleClickDocName(item) {
+    //点击文书
+    handleClickDocument(item) {
+      console.log("🚀 ~ ~ item", item)
       if (item.status == "完成") {
         this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
         this.$router.push({
@@ -93,7 +93,7 @@ export default {
 
     //获取文书列表
     findCarInfoFileById(pageDomId) {
-      findCarInfoFileByIdApi(pageDomId).then(
+      getDocListByIdApi(pageDomId).then(
         res => {
           console.log(" -> res", res);
           if (res.code == 200) {
