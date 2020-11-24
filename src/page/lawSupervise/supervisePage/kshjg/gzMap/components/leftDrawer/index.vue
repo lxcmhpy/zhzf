@@ -515,6 +515,44 @@ export default {
 </script>
 
 <style lang="scss">
+.sdk-user-main-modal{
+  .left-pane.ivu-split-pane{
+    background-color:#2b313e
+  }
+  .sdk-im-panel{
+    background-color:#e1e3e7;
+    margin-top: -48px;
+  }
+  .sdk-left-bottom{
+    background-color: #2b313e !important;
+  }
+  .sdk-im-div{
+    height: 598px !important;
+    padding: 40px 0px 10px 0px !important;
+  }
+  .right-pane{
+    left: 38.6% !important;
+  }
+}
+
+.sdk-user-modal .ivu-split-trigger {
+    border: 1px solid #2b313e;
+}
+.sdk-user-modal .ivu-split-trigger-vertical {
+    background: #2b313e;
+}
+.sdk-user-modal .ivu-modal-content {
+    background-color: #2b313e;
+    color: #ffffff;
+    border: 5px solid #2b313e;
+    box-shadow: #2b313e 0px 0px 8px;
+}
+.sdk-user-modal .ivu-modal-header {
+    background-color:#2b313e;
+    color: #ffffff;
+    border-bottom: none;
+    width: 38.6%;
+}
 .leftDrawer {
   width: 25%;
   background:white;
