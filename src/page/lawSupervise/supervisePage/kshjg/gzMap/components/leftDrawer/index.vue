@@ -527,12 +527,53 @@ export default {
     left: 38.6% !important;
   }
 }
-
+.sdk-user-list-modal .ivu-modal-footer{
+  border: none !important;
+  background: none !important;
+}
+.sdk-user-list-modal .sdk-search-ipt input{
+  background: white !important;
+}
+.sdk-panel{
+  background: #2b313e !important;
+}
+.sdk-voice-modal .ivu-modal-header{
+  background: #2b313e !important;
+}
+.sdk-voice-modal .ivu-modal-footer{
+  background: #2b313e !important;
+  border: none !important;
+}
+.sdk-voice-modal .ivu-modal-content{
+  border: none !important;
+}
+.sdk-user-list-container{
+  background: none !important;
+}
+.sdk-user-list-container .sdk-tabs{
+   background: #2b313e;
+}
+.sdk-user-list-modal .ivu-tabs-bar .ivu-tabs-nav .ivu-tabs-ink-bar{
+  background: white;
+}
+.sdk-user-list-modal .ivu-tabs-bar .ivu-tabs-nav .ivu-tabs-tab-active{
+  background-color: #2b313e;
+}
 .sdk-user-modal .ivu-split-trigger {
     border: 1px solid #2b313e;
 }
 .sdk-user-modal .ivu-split-trigger-vertical {
-    background: #2b313e;
+    background: #2b313e !important;
+}
+.sdk-video-modal .ivu-modal-content{
+  border: none !important;
+}
+.sdk-video-modal .ivu-modal-header{
+   background: #2b313e !important;
+}
+.sdk-video-modal .ivu-modal-footer{
+   background: #2b313e !important;
+   border: none !important;
 }
 .sdk-user-modal .ivu-modal-content {
     background-color: #2b313e;
