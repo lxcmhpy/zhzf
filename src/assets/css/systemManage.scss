@@ -141,6 +141,12 @@
             font-size: 12px;
         }
     }
+    #bigItem{
+        width: 100%;
+         label.el-form-item__label{
+            line-height: 20px;
+         }
+    }
     .part{
         overflow: hidden;
         &>div.item:nth-child(odd){
