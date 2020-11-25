@@ -102,7 +102,7 @@ service.interceptors.request.use(
           // debugger
           // console.log('response.data',response)
           //解密
-          //  response.data.data = JSON.parse(decrypt(response.data.data))
+          if(BASEURL.DECRYPT) response.data.data = JSON.parse(decrypt(response.data.data))
           console.log('response.data',response)
 
           return response.data;

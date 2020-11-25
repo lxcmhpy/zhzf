@@ -20,7 +20,7 @@
         <div
           class="div-item"
           @mouseenter="enterItem(item.label)"
-          @mouseout="leaveItem(item.label)"
+          @mouseleave ="leaveItem(item.label)"
         >
           <span>{{ item.name }}</span>
         </div>
@@ -36,6 +36,7 @@
 
 <script>
 import { mapGetters } from "vuex";
+import _ from "lodash";
 import documentSideMenu from "@/page/inspection/roadAndPolice/compoment/rightDialog/documentSideMenu.vue";
 import operationRecord from "@/page/inspection/roadAndPolice/compoment/rightDialog/operationRecord.vue";
 import relativeRecord from "@/page/inspection/roadAndPolice/compoment/rightDialog/relativeRecord.vue";
@@ -69,6 +70,11 @@ export default {
       this.goToPage(label);
     },
     enterItem(label) {
+      console.log("🚀 ~ file: index.vue ~ line 73 ~ enterItem ~ enterItem")
+      // debugger
+    //   _.throttle(()=>{
+		// 	console.log('hello')
+		// },1000)
       //   this.$emit("enterRightMenu", label);
       this.closeAllDialog();
       this.$refs[this.refMap[label]].showModal();

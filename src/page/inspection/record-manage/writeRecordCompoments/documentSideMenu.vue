@@ -62,9 +62,8 @@ export default {
       this.getData = true;
       let _this = this
       if (this.$route.params.addOrEiditFlag!='add') {
-        getDocListByIdApi(pageDomId||this.$route.params.id).then(
+        getDocListByIdApi(pageDomId||this.$route.params.id,false).then(
           res => {
-            console.log(res);
             _this.caseList = res.data;
           },
           error => {

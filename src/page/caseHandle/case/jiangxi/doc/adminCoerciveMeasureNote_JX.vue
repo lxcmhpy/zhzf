@@ -859,7 +859,7 @@ export default {
       startTime() {
         if (this.docData.measureStartDate) {
           console.log('案发时间=='+this.docData.lasj)
-          if (Date.parse(this.docData.measureStartDate) < Date.parse(this.docData.lasj)) {
+          if (Date.parse(this.docData.measureStartDate) < Date.parse(this.docData.lasj.substr(0,10))) {
             this.$message({
               showClose: true,
               message: "开始时间不得小于立案时间",

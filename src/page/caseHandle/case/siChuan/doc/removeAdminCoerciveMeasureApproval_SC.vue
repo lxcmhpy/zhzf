@@ -264,8 +264,10 @@
               <div class="pdf_seal alginLast" style="white-space:nowrap;height:20%;width:auto;margin-bottom:10px;margin-right:80px;">
                 <p>执法人员签名:{{docData.lawOfficeName}}</p>
                 <p>
-                  <el-date-picker v-model="docData.lawOfficeTime" format=" yyyy年MM月dd日" value-format="yyyy-MM-dd"
-                    class="alginLast" placeholder="    年  月  日" type="date" @blur="starttime"></el-date-picker>
+                 <el-form-item prop="lawOfficeTime" :rules="fieldRules('lawOfficeTime',propertyFeatures['lawOfficeTime'])" style="margin-left:0">
+                    <el-date-picker v-model="docData.lawOfficeTime" format=" yyyy年MM月dd日" value-format="yyyy-MM-dd"
+                      class="alginLast" placeholder="    年  月  日" type="date" @blur="starttime"></el-date-picker>
+                 </el-form-item>
                 </p>
               </div>
             </td>
@@ -520,6 +522,9 @@ export default {
         ],
         evidenceLength: [
           { required: true,validator: validateEvidencLength, trigger: "blur" },
+        ],
+        lawOfficeTime: [
+          { required: true, message: "执法人员签名时间不能为空", trigger: "blur" },
         ],
       },
       approval: this.$route.params.isApproval ? true : false, //   是否是审批人员进入

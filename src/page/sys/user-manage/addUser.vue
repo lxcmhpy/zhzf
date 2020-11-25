@@ -178,7 +178,7 @@ export default {
       rules: {
           username: [
           { required: true, message: "请输入登录用户名", trigger: "blur" },
-          { min: 4, message: "长度大于4个字符", trigger: "blur" },
+          { min: 2, message: "填入字符长度需要大于等于2个字符", trigger: "blur" },
           { validator: validateUsername, trigger: "blur" },
         ],
         nickName: [

@@ -1158,7 +1158,7 @@ export default {
       vehicleAxlesTypeList: [], //轴数
       brandList: [], //品牌
       carInfo: {
-        fileStatus: 0,
+        // fileStatus: 0,
         id: "",
         checkType: "路警联合",
         // detectStation: '',//监测站
@@ -1786,37 +1786,30 @@ export default {
           plateColor: colorCode
         };
         json.push(param);
-        vehicleCheckApi(JSON.stringify(json)).then(
-          res => {
-            if (res.data) {
-              let chewckData = {
-                transCertificateCode: res.data[0].transCertificateCode,
-                vehicleNo: this.carInfo.vehicleShipId,
-                vin: ""
-              };
-              yyclCheckApi(chewckData).then(
-                res => {
-                  _this.carInfo.businessScope =
-                    res.data[0].BusinessScopeCode || "";
-                  _this.carInfo.vehicleShipType =
-                    res.data[0].VehicleTypeCode || "";
-                  _this.carInfo.transportNum = res.data[0].LicenseCode || "";
-                  _this.carInfo.businessStatus =
-                    res.data[0].OperatingStatus || "";
-                  _this.carInfo.drivePerson.partyUnitPosition =
-                    res.data[0].OwnerName || "";
-                },
-              );
-            } else {
-              this.$message.error("未查到数据");
-              _this.carInfo.businessScope = "";
-              _this.carInfo.vehicleShipType = "";
-              _this.carInfo.transportNum = "";
-              _this.carInfo.businessStatus = "";
-              _this.carInfo.drivePerson.partyUnitPosition = "";
-            }
+        vehicleCheckApi(JSON.stringify(json)).then(res => {
+          if (res.data) {
+            let chewckData = {
+              transCertificateCode: res.data[0].transCertificateCode,
+              vehicleNo: this.carInfo.vehicleShipId,
+              vin: ""
+            };
+            yyclCheckApi(chewckData).then(res => {
+              _this.carInfo.businessScope = res.data[0].BusinessScopeCode || "";
+              _this.carInfo.vehicleShipType = res.data[0].VehicleTypeCode || "";
+              _this.carInfo.transportNum = res.data[0].LicenseCode || "";
+              _this.carInfo.businessStatus = res.data[0].OperatingStatus || "";
+              _this.carInfo.drivePerson.partyUnitPosition =
+                res.data[0].OwnerName || "";
+            });
+          } else {
+            this.$message.error("未查到数据");
+            _this.carInfo.businessScope = "";
+            _this.carInfo.vehicleShipType = "";
+            _this.carInfo.transportNum = "";
+            _this.carInfo.businessStatus = "";
+            _this.carInfo.drivePerson.partyUnitPosition = "";
           }
-        );
+        });
       } else {
         this.$message.error("请正确输入车辆颜色和车牌号码");
       }
@@ -1846,7 +1839,7 @@ export default {
         Promise.all(this.resultArr)
           .then(function() {
             //验证全部通过
-            _this.carInfo.fileStatus = 1;
+            // _this.carInfo.fileStatus = 1;
             _this.saveMethod();
           })
           .catch(function(data) {
@@ -1894,6 +1887,23 @@ export default {
       }
     },
 
+    resetIds() {
+      this.carInfo.drivePerson.id = "";
+      this.carInfo.firstCheck.id = "";
+      this.carInfo.secondCheck.id = "";
+      this.carInfo.copyingPoliceData.id = "";
+      this.carInfo.penaltyDecision.id = "";
+    },
+
+    //初次保存后把id赋值回来
+    setIdsBack(obj) {
+      this.carInfo.drivePerson.id = obj.drivePerson.id;
+      this.carInfo.firstCheck.id = obj.firstCheck.id;
+      this.carInfo.secondCheck.id = obj.secondCheck.id;
+      this.carInfo.copyingPoliceData.id = obj.copyingPoliceData.id;
+      this.carInfo.penaltyDecision.id = obj.penaltyDecision.id;
+    },
+
     // 调用保存接口
     saveMethod() {
       let data = JSON.parse(JSON.stringify(this.carInfo));
@@ -1921,6 +1931,8 @@ export default {
               this.$router.push({
                 name: "inspection_overloadDocumentDoc_QH"
               });
+            } else {
+              this.setIdsBack(res.data);
             }
           } else {
             this.$message.error(res.msg);
@@ -1943,22 +1955,20 @@ export default {
     // 获取页面信息
     getPageData() {
       let _this = this;
-      findCarInfoByIdApi(_this.inspectionOverWeightId).then(
-        res => {
-          if (res.code == 200) {
-            _this.carInfo = res.data;
-            this.$store.commit(
-              "set_inspection_penaltyDecisionId",
-              res.data.penaltyDecision.id
-            );
-            _this.initOverRatio();
-            _this.getFile();
-            _this.setLawPersonCurrentP(1);
-          } else {
-            _this.$message.error(res.msg);
-          }
-        },
-      );
+      findCarInfoByIdApi(_this.inspectionOverWeightId).then(res => {
+        if (res.code == 200) {
+          _this.carInfo = res.data;
+          this.$store.commit(
+            "set_inspection_penaltyDecisionId",
+            res.data.penaltyDecision.id
+          );
+          _this.initOverRatio();
+          _this.getFile();
+          _this.setLawPersonCurrentP(1);
+        } else {
+          _this.$message.error(res.msg);
+        }
+      });
     },
 
     //设置超限率
@@ -1992,11 +2002,9 @@ export default {
       fd.append("status", 1); //传图片状态
       fd.append("caseId", this.inspectionOverWeightId); //传记录id
       fd.append("docId", "000005"); //传类型代码
-      uploadCommon(fd).then(
-        res => {
-          this.getFile();
-        },
-      );
+      uploadCommon(fd).then(res => {
+        this.getFile();
+      });
     },
 
     // 删除文件前的钩子
@@ -2007,10 +2015,7 @@ export default {
     // 删除文件
     handleRemoveFile(file, fileList) {
       if (file.storageId) {
-        deleteFileByIdApi(file.storageId).then(
-          res => {
-          },
-        );
+        deleteFileByIdApi(file.storageId).then(res => {});
       } else {
         return;
       }
@@ -2023,15 +2028,14 @@ export default {
         cancelButtonText: "取消",
         iconClass: "el-icon-question",
         customClass: "custom-confirm"
-      })
-        .then(() => {
-          deleteFileByIdApi(file.storageId).then(
-            res => {
-              this.getFile();
-            },
-            error => {}
-          );
-        })
+      }).then(() => {
+        deleteFileByIdApi(file.storageId).then(
+          res => {
+            this.getFile();
+          },
+          error => {}
+        );
+      });
     },
 
     // 获取文件
@@ -2042,14 +2046,12 @@ export default {
           category: "路警联合;附件",
           docId: "000005"
         };
-        getAssistFile(data).then(
-          res => {
-            res.data.forEach(element => {
-              element.name = element.fileName;
-            });
-            this.fileList = res.data;
-          }
-        );
+        getAssistFile(data).then(res => {
+          res.data.forEach(element => {
+            element.name = element.fileName;
+          });
+          this.fileList = res.data;
+        });
       }
     },
 
@@ -2079,10 +2081,9 @@ export default {
     getFileStream(storageId) {
       //设置地址
       this.$store.commit("setDocPdfStorageId", storageId);
-      getFileStreamByStorageIdApi(storageId)
-        .then(res => {
-          this.getObjectURL(res);
-        })
+      getFileStreamByStorageIdApi(storageId).then(res => {
+        this.getObjectURL(res);
+      });
     },
 
     // 将返回的流数据转换为url
@@ -2205,20 +2206,19 @@ export default {
       let data = {
         organId: iLocalStroage.gets("userInfo").organId
       };
-      findDueryFixedSitePage(data)
-        .then(res => {
-          _this.stationRecord = res.data.records;
-          if (_this.stationRecord.length == 1) {
-            if (type == 1) {
-              _this.carInfo.firstCheck.firstCheckStation = this.stationRecord[0].name;
-            }
-            if (type == 2) {
-              _this.carInfo.secondCheck.secondCheckStation = this.stationRecord[0].name;
-            }
-          } else {
-            this.checkStationVisible = true;
+      findDueryFixedSitePage(data).then(res => {
+        _this.stationRecord = res.data.records;
+        if (_this.stationRecord.length == 1) {
+          if (type == 1) {
+            _this.carInfo.firstCheck.firstCheckStation = this.stationRecord[0].name;
           }
-        })
+          if (type == 2) {
+            _this.carInfo.secondCheck.secondCheckStation = this.stationRecord[0].name;
+          }
+        } else {
+          this.checkStationVisible = true;
+        }
+      });
     },
 
     //复检质量变化
@@ -2264,6 +2264,7 @@ export default {
       this.resetForm("drivePerson");
       this.resetForm("firstCheck");
       this.resetForm("secondCheck");
+      this.resetForm("copyingPoliceData");
     },
 
     // 添加滚动事件
@@ -2278,6 +2279,8 @@ export default {
   },
 
   activated() {
+    // debugger
+    console.log("bbbbbbbb", this.inspectionOverWeightId);
     // 如果是新建
     if (this.inspectionOverWeightAdd) {
       this.$store.commit("set_inspection_OverWeight_add", false); //是否新建重置为false
@@ -2287,9 +2290,10 @@ export default {
       this.carInfo.id = this.generateId();
       this.setLawPersonCurrentP();
       this.carInfo.firstCheck.firstCheckTime = this.formatDateTime(new Date());
+      this.resetIds();
     } else {
       this.isEditStatus = false;
-      if(this.inspectionOverWeightId){
+      if (this.inspectionOverWeightId) {
         this.getPageData();
       }
     }

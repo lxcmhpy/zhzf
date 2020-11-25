@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-    <el-form ref="caseDocForm" :model="formData" :rules="rules" label-width="130px" :disabled="canGoNextLink">
+    <el-form ref="caseDocForm" :model="formData" :rules="rules" label-width="130px" >
       <div class="content_box">
         <div class="content">
           <div class="content_title">行政强制措施</div>

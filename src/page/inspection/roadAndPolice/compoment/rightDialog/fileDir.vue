@@ -27,7 +27,7 @@
             v-for="(item, index) in documentList"
             :key="index"
             @click="handleClickDocName(item)"
-            :class="!item.storageId ? 'activeTd' : ''"
+            :class="!item.pdfStorageId ? 'activeTd' : ''"
           >
             <td>{{ index + 1 }}</td>
             <td>{{ item.docName }}</td>
@@ -55,8 +55,7 @@ export default {
   data() {
     return {
       visible: false,
-      documentList: [],
-      getData: false
+      documentList: []
     };
   },
   inject: ["reload"],
@@ -64,7 +63,8 @@ export default {
   methods: {
     showModal() {
       this.visible = true;
-      // debugger
+      this.documentList=[]
+      debugger
       if (this.inspectionOverWeightId && this.documentList.length === 0) {
         this.getDocListByIdFn();
       }
@@ -72,12 +72,12 @@ export default {
     //关闭弹窗的时候清除数据
     closeDialog() {
       this.visible = false;
+      this.getData = false;
     },
 
     //获取卷宗目录列表
     getDocListByIdFn() {
-      getDocListByIdApi(this.inspectionOverWeightId).then(res => {
-        console.log(" -> res", res);
+      getDocListByIdApi(this.inspectionOverWeightId, false).then(res => {
         this.documentList = res.data;
       });
     },
@@ -95,10 +95,10 @@ export default {
       const routerMap = {
         "卷宗封面【青海检查】": "inspection_overloadDocumentDoc_QH"
       };
-      if (item.storageId) {
+      if (item.pdfStorageId) {
         this.$router.push({
           name: "inspection_overload_pdf",
-          params: { id: inspection_overload_pdf, storageId: item.storageId }
+          params: { id: this.inspectionOverWeightId, storageId: item.pdfStorageId }
         });
       } else {
         this.$router.push({
