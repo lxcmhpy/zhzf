@@ -30,6 +30,15 @@ export function numType1(rule, value, callback) {
         callback();
     }
 }
+/** 验证是否整数 请输入整数 可输入0  有值时验证*/
+export function numType2(rule, value, callback) {
+    var re = /^[0-9]([0-9])*$/;
+    if (!re.test(value)&& value) {
+        callback(new Error('请输入整数'));
+    } else {
+        callback();
+    }
+}
 /* 是否是邮箱*/
 export function validateEmail(rule, value, callback) {
     var reg = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;

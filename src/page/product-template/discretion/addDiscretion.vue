@@ -62,7 +62,7 @@ import {
   getCaseCauseListVoApi
 } from "@/api/system";
 // 验证规则
-import {numType} from "@/common/js/validator";
+import {numType2} from "@/common/js/validator";
 export default {
   data() {
     var validateLimit = (rule, value, callback) => {
@@ -96,11 +96,11 @@ export default {
           { required: true, message: "违法行为必须填写", trigger: "blur" }
         ],
         upperLimit: [
-          { validator: numType, trigger: "blur" },
+          { validator: numType2, trigger: "blur" },
           { validator: validateLimit, trigger: "blur"}
         ],
         lawerLimit: [
-          { validator: numType, trigger: "blur" },
+          { validator: numType2, trigger: "blur" },
           { validator: validateLimit, trigger: "blur"}
         ],
         drawerId: [
