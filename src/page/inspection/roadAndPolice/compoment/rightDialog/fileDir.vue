@@ -26,8 +26,8 @@
           <tr
             v-for="(item, index) in documentList"
             :key="index"
-            @click="alertPDF(item)"
-            :class="!item.storageId ? 'activeTd' : ''"
+            @click="handleClickDocName(item)"
+            :class="!item.pdfStorageId ? 'activeTd' : ''"
           >
             <td>{{ index + 1 }}</td>
             <td>{{ item.docName }}</td>
@@ -37,7 +37,7 @@
       </div>
       <!-- <span slot="footer" class="dialog-footer">
         <el-button
-          @click="routerArchiveCatalogueDetail"
+          @click="handleOrder"
           type="primary"
           icon="iconfont law-paixu"
         >
@@ -55,8 +55,7 @@ export default {
   data() {
     return {
       visible: false,
-      documentList: [],
-      getData: false
+      documentList: []
     };
   },
   inject: ["reload"],
@@ -64,35 +63,48 @@ export default {
   methods: {
     showModal() {
       this.visible = true;
+      this.documentList=[]
+      debugger
+      if (this.inspectionOverWeightId && this.documentList.length === 0) {
+        this.getDocListByIdFn();
+      }
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
       this.visible = false;
+      this.getData = false;
     },
 
     //获取卷宗目录列表
-    getDocListByIdApi() {
-      getDocListByIdApi(this.inspectionOverWeightId).then(res => {
-        console.log("getDocListByIdApi -> res", res);
+    getDocListByIdFn() {
+      getDocListByIdApi(this.inspectionOverWeightId, false).then(res => {
         this.documentList = res.data;
       });
     },
 
     //点击排序按钮
-    // routerArchiveCatalogueDetail() {
-    //   this.$router.push({ name: "case_handle_archiveCatalogueDetail" });
-    // },
-    //点击卷宗目录列表
-    alertPDF(item) {
-      //   if (this.$route.name != "case_handle_archiveCover") {
-      //     this.$router.push({
-      //       name: "case_handle_archiveCover",
-      //       params: { clickData: JSON.stringify(item), mulvList: this.caseList }
-      //     });
-      //     return;
-      //   }
-      //   this.$store.commit("setClickArchiveCatalogue", item);
-      //   this.$store.commit("setArchiveCatalogueList", this.caseList);
+    handleOrder() {
+      this.$router.push({ name: "inspection_file_order_page" });
+    },
+    //点击卷宗目录
+    handleClickDocName(item) {
+      console.log(
+        "🚀 ~ file: fileDir.vue ~ line 91 ~ handleClickDocName ~ item",
+        item
+      );
+      const routerMap = {
+        "卷宗封面【青海检查】": "inspection_overloadDocumentDoc_QH"
+      };
+      if (item.pdfStorageId) {
+        this.$router.push({
+          name: "inspection_overload_pdf",
+          params: { id: this.inspectionOverWeightId, storageId: item.pdfStorageId }
+        });
+      } else {
+        this.$router.push({
+          name: routerMap[item.docName]
+        });
+      }
     },
 
     //设置弹窗左偏移
@@ -107,7 +119,6 @@ export default {
   mounted() {
     //设置弹窗遮罩层不要遮到右侧快捷菜单
     this.setRight();
-    this.getDocListByIdApi();
   }
 };
 </script>

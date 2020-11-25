@@ -232,7 +232,7 @@
 </template>
 <script>
 import {
-  addTaskApi, getDictListDetailByNameApi, getTemplateDocList, getDocListById, getRandomResultByPage,
+  addTaskApi, getDictListDetailByNameApi, getTemplateDocList, getRandomResultByPage,
   addCheckResultApi, getCheckResultByIdApi, getCheckResultByTwoIdApi, getCheckResultByIdsApi
 } from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";

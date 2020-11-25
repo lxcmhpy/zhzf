@@ -49,7 +49,7 @@ const inspection = {
     },
     set_inspection_OverWeight_add(state, data) {
       state.inspectionOverWeightAdd = data;
-    }
+    },
   },
   actions: {
     //分页查询对象列表

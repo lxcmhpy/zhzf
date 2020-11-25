@@ -317,17 +317,7 @@ export function getDocumentNameList() {
         cancelToken: setCancelSource()
     });
 }
-//查找当前记录相关文书
-export function getDocListById(data) {
-    return request({
-        url: "/xzjc/document/getDocListById/" + data,
-        method: "get",
-        showloading: true,
-        loadingType: 'loadPart',
-        baseUrlType: 'CAPTCHA_HOST',
-        cancelToken: setCancelSource()
-    });
-}
+
 //添加或修改文书表
 export function saveOrUpdateDocument(data) {
     data = vm.$qs.stringify(data);
@@ -1045,39 +1035,7 @@ export function findCarInfoByIdApi(data) {
         cancelToken: setCancelSource()
     });
 }
-//查找当前记录相关文书
-export function findCarInfoFileByIdApi(data) {
-    // 用初检记录id
-    return request({
-        url: "/xzjc/document/getDocListById/" + data,
-        method: "get",
-        baseUrlType: 'CAPTCHA_HOST',
-        cancelToken: setCancelSource()
-    });
-}
 
-//根据UUID获取超限超载文书数据
-// export function findOverloadDocByIdApi(data) {
-//     // 用初检记录id
-//     return request({
-//         url: "/xzjc/overloadDoc/myGetById/" + data,
-//         method: "get",
-//         baseUrlType: 'CAPTCHA_HOST',
-//         cancelToken: setCancelSource()
-//     });
-// }
-
-// // 根据UUID删除超限超载文书数据
-// export function delOverloadDocById(data) {
-//     return request({
-//         url: "/xzjc/overloadDoc/myRemoveById/" + data,
-//         method: "get",
-//         showloading: true,
-//         loadingType: 'loadPart',
-//         baseUrlType: 'CAPTCHA_HOST',
-//         cancelToken: setCancelSource()
-//     });
-// }
 
 //新的文书生成接口
 export function createNewPdf(data) {
@@ -1094,11 +1052,11 @@ export function createNewPdf(data) {
 }
 
 // 查找 卷宗目录列表
-export function getDocListByIdApi(data) {
+export function getDocListByIdApi(data,loading) {
     return request({
         url: "/xzjc/document/getDocListById/" + data,
         method: "get",
-        showloading: true,
+        showloading: loading,
         loadingType: 'loadPart',
         baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()

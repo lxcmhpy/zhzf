@@ -235,7 +235,7 @@ export default [
           title: "文书",
           oneTab: true
         },
-        component: () =>  import("@/page/inspection/roadAndPolice/viewPdf.vue")
+        component: () => import("@/page/inspection/roadAndPolice/viewPdf.vue")
       },
       {
         path: "/inspection_overWeightList",
@@ -265,8 +265,7 @@ export default [
           title: "记录文书列表",
           oneTab: true
         },
-        component: () =>
-          import("@/page/inspection/roadAndPolice/fileList.vue")
+        component: () => import("@/page/inspection/roadAndPolice/fileList.vue")
       },
       {
         // 卷宗目录页码
@@ -278,6 +277,17 @@ export default [
         },
         component: () =>
           import("@/page/inspection/roadAndPolice/fileDirPage.vue")
+      },
+      {
+        // 卷宗目录排序页面
+        path: "/inspectionFileOrderPage",
+        name: "inspection_file_order_page",
+        meta: {
+          title: "卷宗目录排序",
+          oneTab: true
+        },
+        component: () =>
+          import("@/page/inspection/roadAndPolice/fileDirOrderPage.vue")
       },
       {
         path: "/overloadDocumentDoc",

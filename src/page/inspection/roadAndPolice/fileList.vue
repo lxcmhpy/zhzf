@@ -88,13 +88,10 @@
 import { mixinGetCaseApiList } from "@/common/js/mixins";
 import iLocalStroage from "@/common/js/localStroage";
 import {
-  getDocListById,
-  changeFileStatus,
   getDocListByName,
   delDocumentById,
-  updatePicPath,
   findCarInfoByIdApi,
-  findCarInfoFileByIdApi
+  getDocListByIdApi
 } from "@/api/inspection";
 import { deleteFileByIdApi, uploadCommon } from "@/api/upload.js";
 import Vue from "vue";
@@ -220,7 +217,7 @@ export default {
       findCarInfoByIdApi(this.inspectionOverWeightId).then(
         res => {
           this.setOverList(res);
-          findCarInfoFileByIdApi(res.data.penaltyDecision.id).then(
+          getDocListByIdApi(res.data.penaltyDecision.id,false).then(
             res2 => {
               if (res2.code == 200) {
                 this.tableList = res2.data;

@@ -16,9 +16,6 @@
             <el-form-item>
               <el-button type="primary" size="medium" icon="el-icon-plus" @click="addDict">添加</el-button>
             </el-form-item>
-            <el-form-item>
-              <el-button type="primary" size="medium" icon="el-icon-plus" @click="openNewWeb">打开百度</el-button>
-            </el-form-item>
           </el-form>
         </div>
       </div>
@@ -180,9 +177,6 @@ export default {
           console.log(err);
         }
       );
-    },
-    openNewWeb(){
-      this.$router.push({name:'myIframe'})
     }
   },
   created() {

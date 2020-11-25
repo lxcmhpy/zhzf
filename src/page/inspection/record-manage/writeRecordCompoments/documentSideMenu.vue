@@ -25,7 +25,7 @@
 </template>
 <script>
 import { mapGetters } from "vuex";
-import { getTemplateDocList,getDocListById } from "@/api/inspection";
+import { getTemplateDocList,getDocListByIdApi } from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
 export default {
   data() {
@@ -62,9 +62,8 @@ export default {
       this.getData = true;
       let _this = this
       if (this.$route.params.addOrEiditFlag!='add') {
-        getDocListById(pageDomId||this.$route.params.id).then(
+        getDocListByIdApi(pageDomId||this.$route.params.id,false).then(
           res => {
-            console.log(res);
             _this.caseList = res.data;
           },
           error => {

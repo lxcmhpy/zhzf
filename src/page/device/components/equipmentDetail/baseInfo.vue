@@ -195,7 +195,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="购置价格（元）">
-            <el-input v-model="form.payPrice" placeholder="请输入"></el-input>
+            <el-input-number v-model="form.payPrice" :min="0" :max="1000000000" label="请输入" :controls="false" style="width:100%"></el-input-number>
           </el-form-item>
         </el-col>
       </el-row>
@@ -301,15 +301,19 @@ export default {
         ],
         vehicleType: [
           { required: true, message: "请输入车辆类型", trigger: "blur" },
+          { max: 15, message: '长度不得超过 15 个字符', trigger: 'blur' }
         ],
         brandModel: [
           { required: true, message: "请输入厂牌型号", trigger: "blur" },
+          { max: 30, message: '长度不得超过 30 个字符', trigger: 'blur' }
         ],
         engineNumber: [
           { required: true, message: "请输入发动机号", trigger: "blur" },
+          { max: 30, message: '长度不得超过 30 个字符', trigger: 'blur' }
         ],
         axleNumber: [
           { required: true, message: "请输入车架号码", trigger: "blur" },
+          { max: 30, message: '长度不得超过 30 个字符', trigger: 'blur' }
         ],
         emissionStandard: [
           { required: true, message: "请选择排放标准", trigger: "change" },
@@ -371,7 +375,10 @@ export default {
               _this.$route.params.id = res.data.id;
             },
             (err) => {
-              console.log(err);
+               _this.$message({
+                type: "error",
+                message: err.msg,
+              });
             }
           );
         }
