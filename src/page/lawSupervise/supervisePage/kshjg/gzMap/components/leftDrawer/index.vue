@@ -64,12 +64,13 @@
       </el-tab-pane>
       <el-tab-pane label="通讯录" name="second">
          <div class="input-with-select">
-          <el-input placeholder="请输入人员或机构名称" v-model="gropuName" clearable>
-            <el-button slot="append" icon="el-icon-search" ></el-button>
+          <el-input placeholder="请输入人员" v-model="txlName" @clear='emptyAll' clearable>
+            <el-button slot="append" icon="el-icon-search" @click="getTxl"></el-button>
           </el-input>
         </div>
-        <div class="treeT">
+        <div class="treeT" v-if="flag">
           <el-tree
+            id="unSchTree"
             :data="handleTree"
             show-checkbox
             ref="tree"
@@ -80,12 +81,21 @@
             :props="defaultProps">
           </el-tree>
         </div>
+        <div class="txlAllBox" v-else>
+          <div class="txlAll"   v-for="(v,index) in txlAll" :key="index+11">
+          <el-checkbox  v-model="v.checked" @change="selTxl(v)">
+            <img src="/static/images/img/lawSupervise/icon_jc1.png" alt="">
+            {{v.display_name}}
+          </el-checkbox>
+          </div>
+        </div>
+        
         <div>
           <div class="bottomBtn1">
-            <div>
+            <!-- <div>
               <el-button type="primary" size="mini"   @click="getCheckedKeys">确认</el-button>
-            </div>
-            <div class="lastBtn">
+            </div> -->
+            <div class="lastBtn" v-if="flag">
               <el-button type="primary" size="mini"  @click="resetChecked">重选</el-button>
             </div>
           </div>
@@ -121,7 +131,7 @@
 <script>
 
 import addGroupA from "./addGroup"
-import { organTreeByCurrUser, getOrganTree,getZfjgLawSupervise } from "@/api/lawSupervise.js";
+import { organTreeByCurrUser, getOrganTree,getZfjgLawSupervise,getAllPeople } from "@/api/lawSupervise.js";
 export default {
   props: ['config','allUsers'],
   components: {
@@ -139,13 +149,18 @@ export default {
       direction: 'ltr',
       activeName: 'first',
       gropuName:'',
+      txlName:'',
       selectedArrQ:[],
       selectedArrT:[],
+      selectedArrTa:[],
       group_info:[],
       user_info:[],
       groupCopy:[],
       newGroup:'',
       handleTree:[],
+      flag:true,
+      txlAll:[],
+      checkeds:false
     }
   },
   watch: {
@@ -164,6 +179,7 @@ export default {
 
   },
   mounted(){
+    this.getTree()
   },
   methods: {
     //获取群组
@@ -186,7 +202,11 @@ export default {
       }
     },
     getListData(){
+      this.pictLoading = true
       this.$parent.req_user_profile()
+    },
+    changeLoading(){
+      this.pictLoading = false
     },
     // 群组视频
     videoGroup(val){
@@ -314,8 +334,8 @@ export default {
       }
     },
     handleClick(tab, event) {
-      if(tab.name == "second")
-      this.getTree()
+      // if(tab.name == "second")
+      // this.getTree()
     },
     // 获取树形数据 
     getTree() {
@@ -334,19 +354,14 @@ export default {
     // tree 图标
     renderSlot(h,{ node, data, store }) {
       return (
-        <div class="tree-slot-box">
+        <div class="tree-slot-boxs">
           <img class='img1'
             src={
               data.label === '执法人员' ?'/static/images/img/lawSupervise/icon_jc11.png': '/static/images/img/lawSupervise/icon_jc1.png'
             }
           />
           <span >{data.label}</span>
-           <img class='img2' on-click={ () => this.addPeople(data) }
-            src={
-              // (data.organId || data.label == "执法人员")?'/static/images/img/lawSupervise/gzMapLeftD/add2.jpg':''
-              data.organId?'/static/images/img/lawSupervise/gzMapLeftD/add2.jpg':''
-            }
-          />
+          
         </div>
       )
     },
@@ -381,7 +396,6 @@ export default {
       if(obj.sn){
         this.selectedArrT.push(tempObj)
         this.uniqueObj(this.selectedArrT)
-        this.$message.success('已选中');
       }else{
         this.$message.error('该用户没有uid');
       }
@@ -392,24 +406,7 @@ export default {
       console.log(this.selectedArrT)
        this.selectedArrQ = this.selectedArrQ.concat(this.selectedArrT)
        this.uniqueObj(this.selectedArrQ)
-      // this.selectedArrT = this.selectedArrT.map((v)=>{
-      //   return {uid:v.sn,display_name:v.label}
-      // })
-      // for (let i = 0; i < this.selectedArrT.length; i++) {
-      //     if(this.selectedArrT[i].uid){
-      //         this.selectedArrQ = this.selectedArrQ.concat(this.selectedArrT)
-      //     }
-      // }
-      // this.selectedArrQ = this.unique(this.selectedArrQ)
       console.log(this.selectedArrQ)
-    //  console.log(this.selectedArrQ)
-      // this.selectedArrT = this.$refs.tree.getCheckedKeys()
-      // console.log(this.$refs.tree.getCheckedKeys())
-      // for (let i = 0; i < this.selectedArrT.length; i++) {
-      //   this.selectedArrQ.push(this.selectedArrT[i])
-      // }
-      // this.selectedArrQ = this.unique(this.selectedArrQ)
-      
     },
     // 重选
     resetChecked(){
@@ -425,16 +422,26 @@ export default {
       this.selectedArrT = []
       this.$refs.tree.setCheckedKeys([]);
     },
-    handleCheckChange(val){
-       this.addPeople(val)
+    handleCheckChange(data,checked){
+      console.log(checked)
+      var tempObj = {uid:(data.sn)-0,display_name:data.label} 
+      if(data.sn && checked == true){
+        this.selectedArrT.push(tempObj)
+        this.selectedArrQ = this.selectedArrQ.concat(this.selectedArrT)
+      }else{
+        for (let i = 0; i < this.selectedArrQ.length; i++) {
+          if(data.sn == this.selectedArrQ[i].uid){
+             this.selectedArrQ.splice(i, 1);
+             this.selectedArrT.splice(i, 1);
+          }
+        }
+      }
+      console.log(this.selectedArrT)
+      this.uniqueObj(this.selectedArrQ)
+      console.log(this.selectedArrQ)
     },
     handleSelectionChange(val){
       console.log(val)
-    //  this.addPeople(val)
-        // for (let i = 0; i < val.length; i++) {
-        //   this.selectedArrQ.push(val[i].name)
-        // }
-        // this.selectedArrQ = this.unique(this.selectedArrQ)
     },
     // 去重
     uniqueObj(arr){
@@ -450,12 +457,136 @@ export default {
     unique(arr) {
         return Array.from(new Set(arr));
     },
+    // 选择通讯录checkBox
+    selTxl(data){
+      console.log(data)
+      if(data.checked == true && data.uid !== 'null'){
+        this.selectedArrTa.push(data)
+        this.selectedArrQ = this.selectedArrQ.concat(this.selectedArrTa)
+      }else{
+        for (let i = 0; i < this.selectedArrQ.length; i++) {
+          if(data.uid == this.selectedArrQ[i].uid){
+             this.selectedArrQ.splice(i, 1);
+             this.selectedArrTa.splice(i, 1);
+          }
+        }
+      }
+      this.uniqueObj(this.selectedArrQ)
+      console.log(this.selectedArrTa)
+      console.log(this.selectedArrQ)
+    },
+    emptyAll(){
+      this.flag = true
+    },
+    //查询
+    getTxl(){
+      if(this.txlName){
+        this.flag = false
+        let param = {
+          organId: 1,
+          type: 99,
+          key: this.txlName
+        }
+        getAllPeople(param).then(res => {
+          if(res.code === 200) {
+            console.log(res.data)
+            this.txlAll = res.data.map(v => {
+                return { uid: `${v.id}`, display_name: `${v.label}` ,checked:false};
+            });
+            console.log(this.txlAll)
+          } else {
+            throw new Error("getOrganTree()::::::接口数据错误")
+          }
+        })
+      }else{
+        this.flag = true
+      }
+    },
 },
 
 }
 </script>
 
 <style lang="scss">
+.sdk-user-main-modal{
+  .left-pane.ivu-split-pane{
+    background-color:#2b313e
+  }
+  .sdk-im-panel{
+    background-color:#e1e3e7;
+    margin-top: -48px;
+  }
+  .sdk-left-bottom{
+    background-color: #2b313e !important;
+  }
+  .sdk-im-div{
+    height: 598px !important;
+    padding: 40px 0px 10px 0px !important;
+  }
+  .right-pane{
+    left: 38.6% !important;
+  }
+}
+.sdk-user-list-modal .ivu-modal-footer{
+  border: none !important;
+  background: none !important;
+}
+.sdk-user-list-modal .sdk-search-ipt input{
+  background: white !important;
+}
+.sdk-panel{
+  background: #2b313e !important;
+}
+.sdk-voice-modal .ivu-modal-header{
+  background: #2b313e !important;
+}
+.sdk-voice-modal .ivu-modal-footer{
+  background: #2b313e !important;
+  border: none !important;
+}
+.sdk-voice-modal .ivu-modal-content{
+  border: none !important;
+}
+.sdk-user-list-container{
+  background: none !important;
+}
+.sdk-user-list-container .sdk-tabs{
+   background: #2b313e;
+}
+.sdk-user-list-modal .ivu-tabs-bar .ivu-tabs-nav .ivu-tabs-ink-bar{
+  background: white;
+}
+.sdk-user-list-modal .ivu-tabs-bar .ivu-tabs-nav .ivu-tabs-tab-active{
+  background-color: #2b313e;
+}
+.sdk-user-modal .ivu-split-trigger {
+    border: 1px solid #2b313e;
+}
+.sdk-user-modal .ivu-split-trigger-vertical {
+    background: #2b313e !important;
+}
+.sdk-video-modal .ivu-modal-content{
+  border: none !important;
+}
+.sdk-video-modal .ivu-modal-header{
+   background: #2b313e !important;
+}
+.sdk-video-modal .ivu-modal-footer{
+   background: #2b313e !important;
+   border: none !important;
+}
+.sdk-user-modal .ivu-modal-content {
+    background-color: #2b313e;
+    color: #ffffff;
+    border: 5px solid #2b313e;
+    box-shadow: #2b313e 0px 0px 8px;
+}
+.sdk-user-modal .ivu-modal-header {
+    background-color:#2b313e;
+    color: #ffffff;
+    border-bottom: none;
+    width: 38.6%;
+}
 .leftDrawer {
   width: 25%;
   background:white;
@@ -563,7 +694,7 @@ export default {
     }
    .el-tree {
     border-radius: 4px;
-    .tree-slot-box {
+    .tree-slot-boxs {
       .img1 {
         width: 13px;
         margin-right: 5px;
@@ -577,6 +708,26 @@ export default {
         width: 13px;
         vertical-align: bottom;
       }
+    }
+  }
+  .txlAllBox{
+    margin-left: 5px;
+    height: 197px;
+    overflow: auto;
+    margin-top: 10px;
+    .txlAll {
+      padding: 2px 5px;
+      img{
+        width: 13px;
+      }
+    }
+  }
+  #unSchTree .el-tree-node {
+    .is-leaf + .el-checkbox .el-checkbox__inner{
+      display: inline-block;
+    }
+    .el-checkbox .el-checkbox__inner{
+      display: none;
     }
   }
 }

@@ -345,7 +345,8 @@ export default {
         evidenceDepartmentPhone: '',
         evdenceList: [],
         evidenceLength:0,
-        note:''
+        note:'',
+        makeDate:''
       },
      
       caseDocDataForm: {

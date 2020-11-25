@@ -21,8 +21,8 @@
               <!-- <el-button type="primary" size="medium" icon="el-icon-search" @click="searchTableData">查询</el-button> -->
               <el-button size="medium" class="commonBtn searchBtn" title="搜索" icon="iconfont law-sousuo" @click="searchTableData()"></el-button>
               <el-button size="medium" class="commonBtn searchBtn" title="重置" icon="iconfont law-zhongzhi" @click="resetSearchData('searchForm')"></el-button>
-              <el-button size="medium" class="commonBtn toogleBtn" :title="isShow? '点击收缩':'点击展开'" :icon="isShow? 'iconfont law-top': 'iconfont law-down'" @click="isShow = !isShow">
-              </el-button>
+              <!-- <el-button size="medium" class="commonBtn toogleBtn" :title="isShow? '点击收缩':'点击展开'" :icon="isShow? 'iconfont law-top': 'iconfont law-down'" @click="isShow = !isShow">
+              </el-button> -->
             </div>
           </div>
         </div>
@@ -186,9 +186,7 @@
           <el-form-item label="检查范围" prop="checkRange">
             <el-input v-model="addForm.checkRange"></el-input>
           </el-form-item>
-          <el-form-item label="备注" prop="remark">
-            <el-input v-model="addForm.remark"></el-input>
-          </el-form-item>
+          
           <el-row>
             <el-col :span="4">
               <el-form-item label="抽查对象数" prop="checkObjectNum">
@@ -240,6 +238,9 @@
           <el-form-item label="抽查时限" prop="timeList" style="width:500px;margin-top:10px">
             <el-date-picker v-model="addForm.timeList" type="daterange" range-separator="至" value-format="yyyy-MM-dd">
             </el-date-picker>
+          </el-form-item>
+          <el-form-item label="备注" prop="remark">
+            <el-input v-model="addForm.remark"></el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -334,9 +335,7 @@
           <el-form-item label="检查范围" prop="checkRange">
             <el-input v-model="addForm2.checkRange"></el-input>
           </el-form-item>
-          <el-form-item label="备注" prop="remark">
-            <el-input v-model="addForm2.remark"></el-input>
-          </el-form-item>
+         
           <el-row>
             <el-col :span="4">
               <el-form-item label="抽查对象数" prop="checkObjectNum">
@@ -388,6 +387,9 @@
           <el-form-item label="抽查时限" prop="timeList" style="width:500px;margin-top:10px">
             <el-date-picker v-model="addForm2.timeList" type="daterange" range-separator="至" value-format="yyyy-MM-dd">
             </el-date-picker>
+          </el-form-item>
+           <el-form-item label="备注" prop="remark">
+            <el-input v-model="addForm2.remark"></el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -495,15 +497,15 @@ export default {
         company: '',
         itemType: '',
         checkSubject: '',
-        checkMode: '',
+        checkMode: [],
         checkItem: '',
         checkBasis: '',
         checkRange: '',
         checkObjectNum: '',
         lawEnforceNum: '',
         timeList: '',
-        operatePerson: '',
-        supervisePerson: '',
+        operatePerson: [],
+        supervisePerson: [],
         remark: '',
         status: '',
       },
@@ -514,7 +516,7 @@ export default {
         company: '',
         itemType: '',
         checkSubject: '',
-        checkMode: '',
+        checkMode: [],
         checkItem: '',
         checkBasis: '',
         checkRange: '',
@@ -522,8 +524,8 @@ export default {
         lawEnforceNum: '',
         expertNum: '',
         timeList: '',
-        operatePerson: '',
-        supervisePerson: '',
+        operatePerson: [],
+        supervisePerson: [],
         remark: '',
         status: '',
       },
@@ -665,6 +667,7 @@ export default {
       this.getTableData()
     },
     submitForm(formName, type) {
+      // debugger
       let data = JSON.parse(JSON.stringify(this.addForm))
       data.taskArea = '省交通运输厅领域'
       if (data.timeList) {

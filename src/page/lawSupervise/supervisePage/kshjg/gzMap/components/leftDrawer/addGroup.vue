@@ -50,8 +50,6 @@ export default {
         this.form.name = ' '
     },
     save(){
-        // console.log(this.form.name)
-        // console.log(this.id)
         this.req_create_group(this.form.name,this.id)
     },
     //创建群组
@@ -101,9 +99,6 @@ export default {
     height:35% !important;
     overflow: hidden;
     width: 30% !important;
-}
-.addGroup_alert .el-dialog__body{
-    /* height: 35% !important; */
 }
 .addGroup .el-input{
     width: 70%;

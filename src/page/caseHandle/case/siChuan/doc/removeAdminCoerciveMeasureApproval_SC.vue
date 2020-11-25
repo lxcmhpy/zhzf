@@ -32,7 +32,7 @@
             <td rowspan="2">案件调查人员</td>
             <td colspan="2" class="color_DBE4EF" style="min-width:80px">
               <el-form-item prop="staff1" :rules="fieldRules('staff1',propertyFeatures['staff1'])">
-                <el-input
+                <!-- <el-input
                   type="textarea"
                   v-model="docData.staff1"
                   v-bind:class="{ over_flow:docData.staff1 && docData.staff1.length>14?true:false }"
@@ -40,14 +40,29 @@
                   maxlength="32"
                   placeholder="/"
                   :disabled="fieldDisabled(propertyFeatures['staff1'])"
-                ></el-input>
+                ></el-input> -->
+                <el-select
+                    v-model="docData.staff1"
+                    filterable
+                    allow-create
+                    default-first-option
+                    :disabled="fieldDisabled(propertyFeatures['staff1'])"
+                  >
+                    <el-option
+                      v-for="(item,index) in staffList"
+                      :key="index"
+                      :value="item"
+                      :label="item"
+                      :disabled="docData.staff2==item"
+                    ></el-option>
+                  </el-select>
               </el-form-item>
             </td>
           </tr>
           <tr>
             <td colspan="2" class="color_DBE4EF" style="min-width:80px">
               <el-form-item prop="staff2" :rules="fieldRules('staff2',propertyFeatures['staff2'])">
-                <el-input
+                <!-- <el-input
                   type="textarea"
                   v-model="docData.staff2"
                   v-bind:class="{ over_flow:docData.staff2 && docData.staff2.length>14?true:false }"
@@ -55,7 +70,22 @@
                   maxlength="32"
                   placeholder="/"
                   :disabled="fieldDisabled(propertyFeatures['staff2'])"
-                ></el-input>
+                ></el-input> -->
+                <el-select
+                    v-model="docData.staff2"
+                    filterable
+                    allow-create
+                    default-first-option
+                    :disabled="fieldDisabled(propertyFeatures['staff2'])"
+                  >
+                    <el-option
+                      v-for="(item,index) in staffList"
+                      :key="index"
+                      :value="item"
+                      :label="item"
+                      :disabled="docData.staff1==item"
+                    ></el-option>
+                  </el-select>
               </el-form-item>
             </td>
           </tr>
@@ -234,10 +264,10 @@
               <div class="pdf_seal alginLast" style="white-space:nowrap;height:20%;width:auto;margin-bottom:10px;margin-right:80px;">
                 <p>执法人员签名:{{docData.lawOfficeName}}</p>
                 <p>
-                  <!-- <el-date-picker v-model="docData.lawOfficeTime" format=" yyyy年MM月dd日" value-format="yyyy-MM-dd"
-                    class="alginLast" placeholder="    年  月  日" type="date" @blur="starttime"></el-date-picker> -->
-                    <span v-if="docData.lawOfficeTime">{{docData.lawOfficeTime}}</span>
-                    <span v-else>    年  月  日</span>
+                 <el-form-item prop="lawOfficeTime" :rules="fieldRules('lawOfficeTime',propertyFeatures['lawOfficeTime'])" style="margin-left:0">
+                    <el-date-picker v-model="docData.lawOfficeTime" format=" yyyy年MM月dd日" value-format="yyyy-MM-dd"
+                      class="alginLast" placeholder="    年  月  日" type="date" @blur="starttime"></el-date-picker>
+                 </el-form-item>
                 </p>
               </div>
             </td>
@@ -259,8 +289,10 @@
               <div class="pdf_seal alginLast" style="white-space:nowrap;width:auto;margin-top:160px;margin-right:80px;">
                 <p>签名:{{docData.approvePeo}}</p>
                 <p>
-                  <el-date-picker v-model="docData.approveTime" format=" yyyy年MM月dd日" value-format="yyyy-MM-dd"
-                    class="alginLast" placeholder="    年  月  日" type="date" @blur="starttime"></el-date-picker>
+                  <!-- <el-date-picker v-model="docData.approveTime" format=" yyyy年MM月dd日" value-format="yyyy-MM-dd"
+                    class="alginLast" placeholder="    年  月  日" type="date" @blur="starttime"></el-date-picker> -->
+                    <span v-if="docData.approveTime">{{docData.approveTime}}</span>
+                    <span v-else>    年  月  日</span>
                 </p>
               </div>
             </td>
@@ -491,6 +523,9 @@ export default {
         evidenceLength: [
           { required: true,validator: validateEvidencLength, trigger: "blur" },
         ],
+        lawOfficeTime: [
+          { required: true, message: "执法人员签名时间不能为空", trigger: "blur" },
+        ],
       },
       approval: this.$route.params.isApproval ? true : false, //   是否是审批人员进入
       formOrDocData: {
@@ -517,6 +552,8 @@ export default {
       needDealData: true,
       disableWhenApproval: false,
       propertyFeatures: "", //字段属性配置
+      staffList:[],
+
     };
   },
   computed: { ...mapGetters(["caseId"]) },
@@ -655,6 +692,7 @@ export default {
     },
     //对原始数据做一下处理
     getDataAfter() {
+      this.staffList = this.docData.staff.split(',');
       if(!this.docData.staff1){
         this.docData.staff1 = this.docData.staff.split(',')[0];
         this.docData.staff2 = this.docData.staff.split(',')[1];

@@ -14,11 +14,6 @@ export default {
         return [115.871344, 28.710709];
       }
     },
-    // 放大倍数
-    zoom: {
-      type: Number,
-      default: 5
-    },
     // 底图
     layerUrl: {
       type: String,
@@ -27,6 +22,7 @@ export default {
   },
   data () {
     return {
+      zoom: 8,
       mapConsts: {
         // 江西省范围
         extentJx: [113.57277, 24.488942, 118.482124, 30.079848],
@@ -40,7 +36,7 @@ export default {
       },
       pointsLayerName: new Set(), // 多点点位的图层标识
       pointLayerName: new Set(), // 单点点位的图层标识
-      informationWindow: '', // 信息窗体
+      informationWindow: [], // 信息窗体
       lineId: new Set(), // 单线的id标识
       interval: null
     }
@@ -72,8 +68,8 @@ export default {
           projection: 'EPSG:4326',
           zoom: this.zoom,
           extent: [113.57277, 24.488942, 118.482124, 30.079848],
-          // minZoom: 2,
-          // maxZoom: 10
+          minZoom: 2,
+          maxZoom: 13
         },
         baseLayers: [
           {
@@ -120,6 +116,12 @@ export default {
      * 清除所有点位
      */
     cleanAll() {
+      // 清除点位的时候清除信息弹窗
+      this.informationWindow.map(item => {
+        this.map.removeOverlay(item)
+      })
+      // this.map.removeOverlay(this.informationWindow)
+      // this.map.informationWindow.hide()
       this.cleanPoint()
       // 清除所有多点
       this.pointsLayerName.forEach(item => {
@@ -133,16 +135,16 @@ export default {
      * 添加信息窗体
      */
     addOverlay(data, content) {
-      // this.map.removeOverlay(this.informationWindow)
       let latLng = data.propertyValue.split(',')
-      this.informationWindow = new HMap.Popover(this.map.getMap(), {
+      let window = new HMap.Popover(this.map.getMap(), {
         offset: [0, -45],
         showCloser: true,
         showMarkFeature: false,
         showMinimize: false,
       })
-      this.map.addOverlay(this.informationWindow)
-      this.informationWindow.show(latLng, content)
+      this.map.addOverlay(window)
+      window.show(latLng, content)
+      this.informationWindow.push(window)
     },
 
     /**
@@ -184,9 +186,6 @@ export default {
         }
       }
       this.map.addPoint(point, options)
-      // 打点同时打开信息窗体
-      let content = data.vehicleNumber || data.label || data.name || data.shipNumber || data.nickName || data.eventName
-      this.addOverlay(data, content)
     },
 
     /**
@@ -201,12 +200,12 @@ export default {
         let _layerName = arr.layerName
         this.pointsLayerName.add(_layerName)
         let points = arr.map(item => {
+          // 打开信息弹窗
+          let content = item.vehicleNumber || item.label || item.name || item.shipNumber || item.nickName || item.eventName
+          this.addOverlay(item, content)
           let point = (item && item.propertyValue && item.propertyValue.split(',')) || []
           // 点位数据正常
           if(point.length === 2) {
-            // 打开信息窗体
-            let content = item.vehicleNumber || item.label || item.name || item.shipNumber || item.nickName || item.eventName
-            this.addOverlay(item, content)
             return {
               attributes: {
                 id: item.id,
@@ -239,6 +238,24 @@ export default {
           }
         }
         this.map.addPoints(points, options)
+        this.zoom = 3
+      }
+    },
+
+    /**
+     * 添加轨迹动画
+     */
+    addTrackAction(data, points) {
+      if(points.length > 0) {
+        let index = 0
+        this.interval = setInterval(() => {
+          if(index < points.length) {
+            this.addPoint(data, points[index], '0')
+            index++
+          } else {
+            index = 0
+          }
+        }, 1000)
       }
     },
 
@@ -273,6 +290,11 @@ export default {
         }
       }
       this.map.addPolyline(line, options)
+      // 添加轨迹动画
+      this.addTrackAction({
+        id: 'trackAction',
+        imgUrl: '/static/images/img/lawSupervise/map_renyuan.png'
+      }, points)
     },
 
     /**
@@ -285,23 +307,6 @@ export default {
       this.map.removeFeatureById('trackAction')
       // 清除轨迹动画
       clearInterval(this.interval)
-    },
-
-    /**
-     * 添加轨迹动画
-     */
-    addTrackAction(data, points) {
-      if(points.length > 0) {
-        let index = 0
-        this.interval = setInterval(() => {
-          if(index < points.length) {
-            this.addPoint(data, points[index], '0')
-            index++
-          } else {
-            index = 0
-          }
-        }, 1000)
-      }
     },
   },
   created() {

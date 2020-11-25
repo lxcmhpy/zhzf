@@ -1,7 +1,7 @@
 <template>
   <fullscreen ref="fullscreen" @change="fullscreenChange">
     <div class="jiangXiMap">
-      <JkyBaseHMap @init="init" :center="center" :zoom="zoom" :layerUrl="layerUrl" />
+      <JkyBaseHMap @init="init" :center="center" :layerUrl="layerUrl" />
       <TopInFo />
       <Search
         ref="Search"
@@ -75,7 +75,6 @@ export default {
       ]), // 各类型所对应的点位图标
       page: null, // 地图组件的 this
       map: null,
-      zoom: 8,
       center: [115.871344, 28.710709],
       searchWindowData: {
         window1: {
@@ -191,10 +190,10 @@ export default {
      */
     handleNodeClick(data) {
       console.log(data)
-      // 清空信息窗体
-      this.map.removeOverlay(this.page.informationWindow)
       // 清空右侧复选框
       this.$refs.Select.checkedCities = []
+      // 删除轨迹图
+      this.page.removeFeatureById()
 
       if(data.label === "执法人员") {
         this.getPeopleTree(data)
@@ -208,6 +207,7 @@ export default {
           // 手动给点位添加图层标识属性
           data.layerName = data.label
           this.page.addPoint(data, latLng)
+          this.handleOverLay(data)
         } else {
           this.$message.error('没有坐标数据')
         }
@@ -359,6 +359,7 @@ export default {
 
       let latLng = data.propertyValue.split(',')
       this.page.addPoint(data, latLng)
+      this.handleOverLay(data)
     },
 
     /**
@@ -397,23 +398,16 @@ export default {
         console.log('打开事件列表')
       }
     },
+
   },
-  activated() {
+  created() {
     this.getTree()
   },
   mounted(){
-      this.layerUrl = iLocalStroage.gets('CURRENT_BASE_URL').MAP_HOST+'/{z}/{y}/{x}';
-      this.organId = iLocalStroage.gets("userInfo").organId;
-      this.$nextTick(() => {
-      //  debugger;
-      window.PhoneCallModule.initialize();
-      if (!window.PhoneCallModule.getRegistered()) {
-        // window.PhoneCallModule.sipRegister();
-        let displayName = 'ecds04';
-        let privateIdentity = '100006';
-        let password = '1234';
-        window.PhoneCallModule.sipRegister(displayName, privateIdentity, password);
-      }
+    this.layerUrl = iLocalStroage.gets('CURRENT_BASE_URL').MAP_HOST+'/{z}/{y}/{x}';
+    this.organId = iLocalStroage.gets("userInfo").organId;
+    this.$nextTick(() => {
+      this.initWxPhone(iLocalStroage.gets("userInfo").id)
     })
   }
 }

@@ -47,11 +47,11 @@
       <div class="handelBtn">
         <div>子机构列表</div>
         <div>
-          <el-dropdown split-button type="primary" size="medium" @click="addOrgan">
+          <el-dropdown split-button type="primary" size="medium" @click="addOrgan" @command="handleCommand">
             <i class="iconfont law-icon_weihu"></i>新增机构
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>批量添加</el-dropdown-item>
-              <el-dropdown-item>批量导入</el-dropdown-item>
+              <!-- <el-dropdown-item>批量添加</el-dropdown-item> -->
+              <el-dropdown-item command="批量导入">批量导入</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </div>
@@ -91,12 +91,15 @@
 
     <addOrgan ref="addOrganRef" @getAllOrgan2="getAllOrgan('root')"></addOrgan>
     <updateOrgan ref="updateOrganRef" @getAllOrgan2="getAllOrgan('root')"></updateOrgan>
+    <addMoreOrgan ref="addMoreOrganRef"></addMoreOrgan>
   </div>
 </div>
 </template>
 <script>
 import addOrgan from "./addOrgan";
 import updateOrgan from "./updateOrgan";
+import addMoreOrgan from "./addMoreOrgan";
+
 export default {
   watch: {
     filterText(val) {
@@ -134,7 +137,7 @@ export default {
     };
   },
   components: {
-    addOrgan, updateOrgan
+    addOrgan, updateOrgan,addMoreOrgan
   },
   inject: ["reload"],
   methods: {
@@ -314,6 +317,10 @@ export default {
           );
         })
         .catch(() => {});
+    },
+    handleCommand(command){
+      // alert(command)
+      this.$refs.addMoreOrganRef.showModal();
     }
   },
   mounted() {

@@ -317,17 +317,7 @@ export function getDocumentNameList() {
         cancelToken: setCancelSource()
     });
 }
-//查找当前记录相关文书
-export function getDocListById(data) {
-    return request({
-        url: "/xzjc/document/getDocListById/" + data,
-        method: "get",
-        showloading: true,
-        loadingType: 'loadPart',
-        baseUrlType: 'CAPTCHA_HOST',
-        cancelToken: setCancelSource()
-    });
-}
+
 //添加或修改文书表
 export function saveOrUpdateDocument(data) {
     data = vm.$qs.stringify(data);
@@ -1045,12 +1035,29 @@ export function findCarInfoByIdApi(data) {
         cancelToken: setCancelSource()
     });
 }
-//查找当前记录相关文书
-export function findCarInfoFileByIdApi(data) {
-    // 用初检记录id
+
+
+//新的文书生成接口
+export function createNewPdf(data) {
+    data = vm.$qs.stringify(data);
+    return request({
+        url: "/xzjc/document/createNewPdf",
+        method: "post",
+        data: data,
+        showloading: true,
+        loadingType: 'loadPart',
+        baseUrlType: 'CAPTCHA_HOST',
+        cancelToken: setCancelSource()
+    });
+}
+
+// 查找 卷宗目录列表
+export function getDocListByIdApi(data) {
     return request({
         url: "/xzjc/document/getDocListById/" + data,
         method: "get",
+        showloading: true,
+        loadingType: 'loadPart',
         baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
     });

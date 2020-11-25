@@ -14,7 +14,7 @@
                   size="medium"
                   class="commonBtn searchBtn"
                   type="primary"
-                  @click="addRecordDialog"
+                  @click="handleClickAdd"
                   >添加记录</el-button
                 >
               </el-form-item>
@@ -154,10 +154,9 @@
           </el-table-column>
           <el-table-column fixed="right" label="操作" align="center">
             <template slot-scope="scope">
-              <el-button @click="viewRecord(scope.row)" type="text"
+              <el-button @click="handleView(scope.row)" type="text"
                 >查看</el-button
               >
-              <!-- <el-button :disabled="!inspectionFileEdit" type="text" @click="delModle(scope.row.id)">删除</el-button> -->
             </template>
           </el-table-column>
         </el-table>
@@ -188,7 +187,7 @@
           <li
             v-for="(item, index) in checkList"
             :key="index"
-            @click="addRecord(item.label)"
+            @click="handleClickAddType(item.label)"
           >
             <i class="iconfont" :class="item.iconName" :style="item.color"></i
             ><br />
@@ -210,15 +209,12 @@ import {
 export default {
   data() {
     return {
-      compData: [],
-      viewFlag: [],
       recordList: [],
-      currentFileId: "",
       total: 0,
       currentPage: 1, //当前页
       pageSize: 10, //pagesize
       totalPage: 0, //总页数
-      fileList: [],
+      //业务类型
       domainList: [
         { name: "全部", value: 0 },
         { name: "路警联合", value: 1 },
@@ -228,12 +224,15 @@ export default {
         { name: "不足1吨", value: 5 },
         { name: "特种车", value: 6 }
       ],
+      //处置状态
       statusList: [
         { name: "全部", value: 3 },
         { name: "进行中", value: 0 },
-        { name: "已归档", value: 2 },
         { name: "待归档", value: 1 },
+        { name: "已归档", value: 2 },
       ],
+
+      //超限类型
       checkList: [
         { label: "特种车", iconName: "law-btn_te", color: "color:#4382e6" },
         { label: "绿通车", iconName: "law-btn_lv", color: "color:#23aa98" },
@@ -242,6 +241,7 @@ export default {
         { label: "路警联合", iconName: "law-btn_luj", color: "color:#4573d0" },
         { label: "大件许可", iconName: "law-btn_daj", color: "color:#009fff" }
       ],
+      //车牌颜色
       vehicleColorObj: {
         黑色: "vehicle-black",
         白色: "vehicle-white",
@@ -253,8 +253,9 @@ export default {
         渐变绿: "vehicle-gradient-green",
         黄绿色: "vehicle-yelloe-green"
       },
+
       searchForm: {
-        vehicleShipId: "",
+        vehicleShipId: "",//车牌号
         fileStatus: 3,
         checkType: ""
       },
@@ -266,91 +267,25 @@ export default {
     };
   },
   methods: {
-    addNewModle() {
-      this.$refs.addModleRef.showModal();
-    },
-    submitForm(formName) {
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
-    },
-    // 选择模板
-    editRecord(item) {
-      // 写文书
-      if (item.pdfStorageId && item.status != "暂存") {
-        this.$router.push({
-          name: "inspection_myPDF",
-          params: { id: item.id, storagePath: item.pdfStorageId }
-        });
-      } else {
-        this.$store.commit("set_inspection_fileId", item.id);
-        this.$router.push({
-          name: item.path,
-          params: { id: item.id, addOrEiditFlag: "add" }
-          // query: { id: item.id, addOrEiditFlag: 'add' }
-        });
-        // 写表单
-        this.$emit("changeModleId", item);
-      }
-    },
-    // 查看模板
-    viewRecord(item) {
+    // 查看
+    handleView(item) {
       this.$router.push({
         name: "inspection_overWeightForm"
       });
       this.$store.commit("set_inspection_fileId", item.id);
-      this.$store.commit("set_inspection_OverWeightId", {
-        id: item.id,
-        firstcheckId: item.firstCheckId
-      });
-      this.$store.commit("set_inspection_OverWeightFresh", false);
+      this.$store.commit("set_inspection_OverWeightId", item.id);
+      this.$store.commit("set_inspection_OverWeight_add", false);
     },
-    // 修改模板
-    editModle(item) {
-      console.log("选中的模板", item);
-      this.$store.commit("set_inspection_fileId", item.id);
-      this.$refs.addModleRef.showModal(item);
-    },
-    // 删除模板
-    delModle(item) {
-      console.log("选中的模板", item);
-      this.$confirm("确认删除当前记录文书？", "删除记录文书", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      }).then(() => {
-        delDocumentById(item).then(
-          res => {
-            console.log(res);
-            if (res.code == 200) {
-              this.$message({
-                type: "success",
-                message: res.msg
-              });
-              this.getTableData();
-            }
-          },
-          error => {
-            // reject(error);
-          }
-        );
-      });
-    },
-    // 预览
-    preview() {
-      this.$refs.previewRef.showModal(this.compData);
-    },
+
+    // 重置
     resetForm(formName) {
       this.$refs[formName].resetFields();
       this.getTableData();
     },
+
+    // 获取列表数据
     getTableData() {
       this.recordList = [];
-
       let data = {
         checkType: this.searchForm.checkType,
         fileStatus: this.searchForm.fileStatus,
@@ -363,15 +298,12 @@ export default {
       }
       getPcQueryCarInfoApi(data).then(
         res => {
-          console.log(res);
           if (res.code == 200) {
             this.recordList = res.data.records;
             this.totalPage = res.data.total;
           }
         },
-        error => {
-          // reject(error);
-        }
+        error => {}
       );
     },
     //更改每页显示的条数
@@ -386,49 +318,26 @@ export default {
       this.getTableData();
     },
 
-    // 点击--添加记录
-    addRecordDialog() {
+    // 点击--添加
+    handleClickAdd() {
       this.dialogVisible = true;
     },
 
-    addRecord(label) {
+    //新建
+    handleClickAddType(label) {
+      console.log(" -> label", label)
       let _this = this;
-      console.log("yanzheng", label);
       if (label == "路警联合") {
         this.$store.commit("set_inspection_OverWeightId", "");
         this.$router.push({
           name: "inspection_overWeightForm"
         });
-        this.$store.commit("set_inspection_OverWeightFresh", true);
+        this.$store.commit("set_inspection_OverWeight_add", true);
       }
-    },
-    getDrawerList(data) {
-      let _this = this;
-      data.forEach(element => {
-        getDictListDetailByNameApi(element.name).then(
-          res => {
-            switch (element.option) {
-              case 1:
-                _this.domainList = res.data;
-                break; //业务类型
-              case 2:
-                _this.statusList = res.data;
-                break; //处置状态
-            }
-          },
-
-          error => {
-            // reject(error);
-          }
-        );
-      });
     }
   },
   mounted() {
     this.getTableData();
-    // this.getDrawerList([
-    //   { name: '路警联合-业务类型', option: 1 },
-    //   { name: '路警联合-处置状态', option: 2 }])
   }
 };
 </script>

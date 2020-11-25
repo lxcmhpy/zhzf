@@ -160,7 +160,18 @@ export function getById(type,id) {
         cancelToken: setCancelSource()
     });
   }
-
+  // 查询机构树
+  export function getAllPeople(data) {
+    return request({
+      url: "/zfjg/sysOrgan/queryLike",
+      method: "get",
+      params:data,
+      showloading: false,
+      // loadingType:'loadFull',
+      baseUrlType:  'CAPTCHA_HOST',
+      cancelToken: setCancelSource()
+    });
+  }
   // 获取机构树
   export function organSysTreeByCurrUser(){
     return request({
@@ -628,6 +639,27 @@ export function findUserByOrganId(id) {
     return  request({
       url:  "/zfjg/sysUser/findByOrganId/"+id,
       method:  "GET",
+      showloading: true,
+      loadingType:'loadPart',
+      cancelToken:  setCancelSource(),
+    });
+  }
+
+  export function findWxPCSn(id) {
+    return  request({
+      url:  "/zfjg/sysUser/findWxPCSn/"+id,
+      method:  "GET",
+      showloading: true,
+      loadingType:'loadPart',
+      cancelToken:  setCancelSource(),
+    });
+  }
+
+  export function findControl(data) {
+    return  request({
+      url:  "/zfjg/control/list",
+      method:  "GET",
+      params: data,
       showloading: true,
       loadingType:'loadPart',
       cancelToken:  setCancelSource(),

@@ -53,7 +53,8 @@ const getters = {
   inspectionTempleteId:state => state.inspection.inspectionTempleteId, //行政检查模板id
   inspectionFileEdit:state => state.inspection.inspectionFileEdit, //行政检查模板id
   inspectionOverWeightId:state => state.inspection.inspectionOverWeightId, //行政检查超限记录id
-  inspectionOverWeightFresh:state => state.inspection.inspectionOverWeightFresh, //行政检查超限记录是否保留缓存
+  penaltyDecisionId:state => state.inspection.penaltyDecisionId, //行政检查文书对象id
+  inspectionOverWeightAdd:state => state.inspection.inspectionOverWeightAdd, //行政检查超限记录是否保留缓存
 
 };
 export default getters;

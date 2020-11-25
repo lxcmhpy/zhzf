@@ -84,16 +84,19 @@
                 询问人：
                 <el-form-item
                   v-if="!lineStyleFlag"
-                  prop="inquiryStaff"
+                  prop="inquiryStaffArr"
                   class="width212"
-                  :rules="fieldRules('inquiryStaff',propertyFeatures['inquiryStaff'])"
+                  :rules="fieldRules('inquiryStaffArr',propertyFeatures['inquiryStaffArr'])"
+                  id="inquiryStaffArrBox"
                 >
-                  <!-- <el-input type='textarea' v-model="docData.inquiryStaff" v-bind:class="{ over_flow:docData.inquiryStaff.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="/"></el-input> -->
-                  <!-- <el-input type='textarea' v-model="docData.inquiryStaff" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="/"></el-input> -->
                   <el-select
-                    v-model="docData.inquiryStaff"
+                    v-model="docData.inquiryStaffArr"
                     :maxLength="maxLength"
-                    :disabled="fieldDisabled(propertyFeatures['inquiryStaff'])"
+                    multiple
+                    filterable
+                    allow-create
+                    default-first-option
+                    :disabled="fieldDisabled(propertyFeatures['inquiryStaffArr'])"
                   >
                     <el-option
                       v-for="(item,index) in staffList"
@@ -111,16 +114,19 @@
                 记录人：
                 <el-form-item
                   v-if="!lineStyleFlag"
-                  prop="recordStaff"
+                  prop="recordStaffArr"
                   style="width:241px"
-                  :rules="fieldRules('recordStaff',propertyFeatures['recordStaff'])"
+                  :rules="fieldRules('recordStaffArr',propertyFeatures['recordStaffArr'])"
+                  id="recordStaffArrBox"
                 >
-                  <!-- <el-input type='textarea' v-model="docData.recordStaff" v-bind:class="{ over_flow:docData.recordStaff.length>14?true:false }" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="/"></el-input> -->
-                  <!-- <el-input type='textarea' v-model="docData.recordStaff" :autosize="{ minRows: 1, maxRows: 3}" :maxLength='maxLength' placeholder="/"></el-input> -->
                   <el-select
-                    v-model="docData.recordStaff"
+                    v-model="docData.recordStaffArr"
                     :maxLength="maxLength"
-                    :disabled="fieldDisabled(propertyFeatures['recordStaff'])"
+                    multiple
+                    filterable
+                    allow-create
+                    default-first-option
+                    :disabled="fieldDisabled(propertyFeatures['recordStaffArr'])"
                   >
                     <el-option
                       v-for="(item,index) in staffList"
@@ -573,7 +579,9 @@ export default {
         inquiriedSex: "",
         inquiried: "",
         inquiryStaff: "",
+        inquiryStaffArr:[],
         recordStaff: "",
+        recordStaffArr:[],
         inquiriedRelation: "",
         inquiriedAge: "",
         inquiriedTel: "",
@@ -628,10 +636,10 @@ export default {
         inquiryAddress: [
           { required: true, message: "地点不能为空", trigger: "blur" },
         ],
-        inquiryStaff: [
+        inquiryStaffArr: [
           { required: true, message: "询问人不能为空", trigger: "blur" },
         ],
-        recordStaff: [
+        recordStaffArr: [
           { required: true, message: "记录人不能为空", trigger: "change" },
         ],
         inquiried: [
@@ -713,7 +721,7 @@ export default {
   inject: ["reload"],
   mixins: [mixinGetCaseApiList],
   computed: { 
-    ...mapGetters(["caseId", "currentFileData"]),
+    ...mapGetters(["caseId", "currentFileData","docDataId"]),
       getEvidenceTime() {
           if (this.docData.askdataStart) {
             return new Date(this.docData.askdataStart).format('yyyy年MM月dd日HH时mm分')
@@ -751,7 +759,8 @@ export default {
           "次)";
         this.com_getCaseBasicInfo(data.caseId, data.docId);
       } else {
-        let currentDocDataId = iLocalStroage.get("currentDocDataId")||this.currentFileData.docDataId;
+        console.log('iLocalStroage.get("currentDocDataId")',iLocalStroage.get("currentDocDataId"));
+        let currentDocDataId = iLocalStroage.get("currentDocDataId")||this.currentFileData.docDataId || this.docDataId;
         if (currentDocDataId) {
           this.getDocDetailById(currentDocDataId);
         } else {
@@ -796,6 +805,8 @@ export default {
 
     //保存文书信息
     saveData(handleType) {
+      this.docData.inquiryStaff = this.docData.inquiryStaffArr.join(',');
+      this.docData.recordStaff = this.docData.recordStaffArr.join(',');
       this.com_addDocData(handleType, "docForm");
     },
     submitData(handleType) {
@@ -868,6 +879,9 @@ export default {
       //询问人默认填写文书的人
       this.docData.inquiryStaff = iLocalStroage.gets("userInfo").nickName;
       this.docData.organName = iLocalStroage.gets("userInfo").organName; 
+      this.docData.inquiryStaffArr = this.docData.inquiryStaff ? this.docData.inquiryStaff.split(',') : [];
+      this.docData.recordStaffArr = this.docData.recordStaff ? this.docData.recordStaff.split(',') : [];
+
       //与案件关系默认为当事人
       // this.docData.inquiriedRelation = "0";
       // this.docData.inquiried = this.docData.party;
@@ -1047,6 +1061,24 @@ export default {
       top: 0;
       left: 10px;
     }
+  }
+  #inquiryStaffArrBox{
+    .el-form-item__content{
+      height: 60px;
+      .el-input{height: 60px;}
+      .el-input__inner{
+        height: 60px !important;
+      }
+    } 
+  }
+  #recordStaffArrBox{
+    .el-form-item__content{
+      height: 60px;
+      .el-input{height: 60px;}
+      .el-input__inner{
+        height: 60px !important;
+      }
+    } 
   }
 }
 </style>

@@ -1,19 +1,21 @@
 {
-  "CURRENT": "SC",
+  "CURRENT": "JX",
   "HOME_PAGE_ROUTER_NAME": "case_handle_home_index",
   "SYS_TITLE": "",
+  "DECRYPT":false,   
   "PS": {
     "HOME_PAGE_ROUTER_NAME": "catsAppraisalExamination//评议考核，case_handle_home_index //案件办理law_supervise_lawSupervise//监管",
     "CAPTCHA_HOST": "系统管理/案件办理  96：9000",
     "VIDEO_HOST": "综合监管语音通话",
-    "CHECK_API": "信息检查 91:8081",
+    "CHECK_API": "信息检查 91:8081",  
     "XJ_IMG_HOST": "新疆图片视频地址",
     "MAP_HOST": "监管地图地址",
     "QZ_SOCKET_HOST": "签章webSocket地址",
-    "VIDEO_UDP_HOST": "综合监管语音通话udp"
+    "VIDEO_UDP_HOST": "综合监管语音通话udp",
+    "DECRYPT":"是否解密接口data数据"
   },
   "TEST": {
-    "CAPTCHA_HOST": "http://124.192.215.4:9000",
+    "CAPTCHA_HOST": "http://172.16.169.66:9000",
     "VIDEO_HOST": "wss://124.192.215.9:10062",
     "XJ_IMG_HOST": "http://218.84.108.29:9456",
     "CHECK_API": "http://124.192.215.11:8081",

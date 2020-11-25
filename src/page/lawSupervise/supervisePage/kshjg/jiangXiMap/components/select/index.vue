@@ -1,5 +1,6 @@
 <script>
 export default {
+  inject: ['indexPage'],
   props: {
     config: {
       type: Object,
@@ -18,6 +19,16 @@ export default {
       isIndeterminate: true,
       checkedCities: [], // 选择的参数
       checkAll: false,
+      colors: [{
+        name: '眼眸',
+        path: 'http://111.75.227.156:18984/xxzx_admin_site01/rest/services/JIANGXISIMPLE2020YM/MapServer/{z}/{y}/{x}'
+      }, {
+        name: '一蓑烟雨',
+        path: 'http://111.75.227.156:18984/xxzx_admin_site01/rest/services/JIANGXI2020YSYY/MapServer/{z}/{y}/{x}'
+      }, {
+        name: '烟雨',
+        path: 'http://111.75.227.156:18984/xxzx_admin_site01/rest/services/JIANGXISIMPLEQHC2020/MapServer/{z}/{y}/{x}?key=OWUYmEyO'
+      }]
     }
   },
   methods: {
@@ -69,6 +80,15 @@ export default {
      */
     handleChange(value) {
       this.$emit("handleChange", value)
+    },
+
+    /**
+     * 点击换肤按钮
+     */
+    changeColor(data) {
+      this.indexPage.layerUrl = data.path
+      this.indexPage.page.init()
+      console.log(data)
     },
 
     /**
@@ -157,6 +177,24 @@ export default {
           <span class="fullScreen">{data.title}</span>
         </div>
       )
+    },
+
+    /**
+     * 换肤按钮生成函数
+     */
+    rendChangeColor() {
+      return (
+        <el-popover
+          class="changeColor"
+          placement="bottom"
+          width="60"
+          trigger="click">
+          <div class="changeText" on-click={()=>{this.changeColor(this.colors[0])}}>{this.colors[0].name}</div>
+          <div class="changeText" on-click={()=>{this.changeColor(this.colors[1])}}>{this.colors[1].name}</div>
+          <div class="changeText" on-click={()=>{this.changeColor(this.colors[2])}}>{this.colors[2].name}</div>
+          <i class="iconfont law-skin f22" slot="reference"></i>
+        </el-popover>
+      )
     }
   },
   render() {
@@ -164,6 +202,7 @@ export default {
       <div class="jk-mapSelect">
         {this.renderDropdown()}
         {this.renderFull()}
+        {this.rendChangeColor()}
       </div>
     )
   }
@@ -171,6 +210,15 @@ export default {
 </script>
 
 <style lang="scss">
+.changeText {
+  padding: 5px 10px;
+  text-align: center;
+  cursor: pointer;
+}
+.changeText:hover {
+  background: #4573d0;
+  color: #FFFFFF;
+}
 .jk-mapSelect {
   position: absolute;
   top: 40px;
@@ -203,6 +251,13 @@ export default {
       //   flex-direction: column;
       //   justify-content: flex-start;
       // }
+    }
+  }
+  .changeColor {
+    margin-right: 20px;
+    .iconfont {
+      color:#4573d0;
+      cursor: pointer;
     }
   }
 }

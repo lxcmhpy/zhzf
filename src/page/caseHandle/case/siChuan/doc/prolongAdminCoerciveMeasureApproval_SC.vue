@@ -32,7 +32,7 @@
             <td rowspan="2">案件调查人员</td>
             <td colspan="2" class="color_DBE4EF" style="min-width:80px">
               <el-form-item prop="staff1" :rules="fieldRules('staff1',propertyFeatures['staff1'])">
-                <el-input
+                <!-- <el-input
                   type="textarea"
                   v-model="docData.staff1"
                   v-bind:class="{ over_flow:docData.staff1 && docData.staff1.length>14?true:false }"
@@ -40,14 +40,30 @@
                   maxlength="32"
                   placeholder="/"
                   :disabled="fieldDisabled(propertyFeatures['staff1'])"
-                ></el-input>
+                ></el-input> -->
+    
+                <el-select
+                    v-model="docData.staff1"
+                    filterable
+                    allow-create
+                    default-first-option
+                    :disabled="fieldDisabled(propertyFeatures['staff1'])"
+                  >
+                    <el-option
+                      v-for="(item,index) in staffList"
+                      :key="index"
+                      :value="item"
+                      :label="item"
+                      :disabled="docData.staff2==item"
+                    ></el-option>
+                  </el-select>
               </el-form-item>
             </td>
           </tr>
           <tr>
             <td colspan="2" class="color_DBE4EF" style="min-width:80px">
               <el-form-item prop="staff2" :rules="fieldRules('staff2',propertyFeatures['staff2'])">
-                <el-input
+                <!-- <el-input
                   type="textarea"
                   v-model="docData.staff2"
                   v-bind:class="{ over_flow:docData.staff2 && docData.staff2.length>14?true:false }"
@@ -55,7 +71,22 @@
                   maxlength="32"
                   placeholder="/"
                   :disabled="fieldDisabled(propertyFeatures['staff2'])"
-                ></el-input>
+                ></el-input> -->
+                <el-select
+                    v-model="docData.staff2"
+                    filterable
+                    allow-create
+                    default-first-option
+                    :disabled="fieldDisabled(propertyFeatures['staff2'])"
+                  >
+                    <el-option
+                      v-for="(item,index) in staffList"
+                      :key="index"
+                      :value="item"
+                      :label="item"
+                      :disabled="docData.staff1==item"
+                    ></el-option>
+                  </el-select>
               </el-form-item>
             </td>
           </tr>
@@ -218,6 +249,8 @@
               <p>制</p>
               <p>措</p>
               <p>施</p>
+              <p>期</p>
+              <p>限</p>
               <p>的</p>
               <p>建</p>
               <p>议</p>
@@ -410,7 +443,9 @@ export default {
         lawOfficeName: "",
         lawOfficeTime: "",
         evidenceLength:0,
-        note: ""
+        note: "",
+        staffList:[],
+
       },
       caseDocDataForm: {
         id: "", //修改的时候用
@@ -647,11 +682,13 @@ export default {
     },
     //对原始数据做一下处理
     getDataAfter() {
+      this.staffList = this.docData.staff.split(',');
       if(!this.docData.staff1){
         this.docData.staff1 = this.docData.staff.split(',')[0];
         this.docData.staff2 = this.docData.staff.split(',')[1];
       }
     },
+    
   },
   created() {
     this.getDocDataByCaseIdAndDocId()

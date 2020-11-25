@@ -181,7 +181,7 @@ import {
 import { upload, deleteFileByIdApi, uploadCommon } from "@/api/upload.js";
 import iLocalStroage from "@/common/js/localStroage";
 import { mapGetters } from "vuex";
-
+import {  validatePhone ,validateIDNumber} from "@/common/js/validator";
 import merge from "webpack-merge";
 export default {
   props: ["psMsg"],
@@ -772,7 +772,7 @@ export default {
       this.findRecordDataByld();
     },
     updateMole(data) {
-      // console.log("updateMole -> data", data)
+      // console.log(" -> data", data)
       this.modleId = data.id;
       this.findDataByld();
       this.isChangeModle = false;
@@ -985,8 +985,9 @@ export default {
           }
         }
         if (item.type == "文本型") {
+          // debugger
           item.type = "input";
-          this.rule.push({
+          let inputRule={
             type: "input",
             field: item.id || item.field, //id用于传值，field用于预览
             title: item.title,
@@ -1005,7 +1006,22 @@ export default {
                 trigger: "blur",
               },
             ],
-          });
+          }
+          if(item.title==='企业联系方式'||item.title==='联系方式'){
+            inputRule.validate=[{
+              required: item.required == "true" ? true : false,
+              validator:validatePhone,
+              trigger: "blur",
+            }]
+          }
+          if(item.title==='证件号码'){
+            inputRule.validate=[{
+              required: item.required == "true" ? true : false,
+              validator:validateIDNumber,
+              trigger: "blur",
+            }]
+          }
+          this.rule.push(inputRule);
         } else if (item.type == "抽屉型") {
           item.options.forEach((option) => {
             option.label = option.value;
@@ -1247,8 +1263,8 @@ export default {
               maxLength: 5,
               limit: 5,
               allowRemove: true,
-              accept: "image/jpeg,image/jpg,image/bmp", // 上传文件类型
-              format: ["jpg", "jpeg", "bmp"], // 上传文件格式
+              accept: "image/jpeg,image/jpg", // 上传文件类型
+              format: ["jpg", "jpeg"], // 上传文件格式
               // maxSize: 2048, // 上传文件大小最大值
               handleIcon: true, //显示预览按钮
               autoUpload: true,

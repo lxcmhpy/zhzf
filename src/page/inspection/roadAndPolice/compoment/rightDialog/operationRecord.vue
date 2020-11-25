@@ -1,21 +1,20 @@
 <template v-if="caseInfo">
   <div>
-    <el-dialog custom-class="leftDialog leftDialog2 archiveCatalogueBox documentFormCat" :visible.sync="visible" @close="closeDialog" top="0px" width="405px" :modal="false" :show-close="false" :append-to-body="true">
+    <el-dialog custom-class="leftDialog leftDialog2 archiveCatalogueBox documentFormCat margin-bottom0" :visible.sync="visible" @close="closeDialog" top="0px" width="405px" :modal="false" :show-close="false" :append-to-body="true" style="top:60px;right:60px;">
       <template slot="title">
         <div class="catalogueTitle">
-          文书列表
-          <!-- <span style="color:#E54241">（{{fileList.length}}）</span> -->
+          操作记录列表
+          <!-- <span style="color:#E54241">（{{caseList.length}}）</span> -->
         </div>
       </template>
-      <div v-if="!inspectionOverWeightId">
-        请先保存表单
-      </div>
-      <div class="userList caseAndEvidenceListDiaClass">
-        <li v-for="(item,index) in fileList" :label="item.storageId" :key="item.storageId" style="font-size: 16px;line-height: 36px;cursor: pointer;">
-          <span class="name">{{index + 1}}、</span>
-          <span class="name">{{item.docName}}</span>
-          <span class="name" style="margin-left:20px;color:bule">{{item.status?item.status:'未完成'}}</span>
-        </li>
+      <div class="userList a">
+        暂未开发
+        <!-- <el-checkbox-group v-model="checkedDocId">
+          <el-checkbox v-for="(item,index) in caseList" :label="item.storageId" :key="item.storageId">
+            <span class="name">{{index + 1}}</span>
+            <span class="name">{{item.docName}}</span>
+          </el-checkbox>
+        </el-checkbox-group> -->
       </div>
       <!-- <span slot="footer" class="dialog-footer">
         <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange"></el-checkbox>
@@ -26,13 +25,13 @@
 </template>
 <script>
 import { mapGetters } from "vuex";
-import { getTemplateDocList, getDocListById, findCarInfoFileByIdApi } from "@/api/inspection";
+import { findByCaseBasicInfoIdApi, findByCaseIdAndDocIdApi, findVoByDocCaseIdApi } from "@/api/caseHandle";
 import iLocalStroage from "@/common/js/localStroage";
 export default {
   data() {
     return {
       visible: false,
-      fileList: [],
+      caseList: [],
       mlList: [],
       pdfVisible: false,
       host: "",
@@ -48,31 +47,47 @@ export default {
   },
   inject: ["reload"],
   // props: ["caseInfo"],
-  computed: { ...mapGetters(["caseId", 'inspectionOverWeightId']) },
+  computed: { ...mapGetters(["caseId"]) },
   methods: {
-    showModal(pageDomId) {
+    showModal() {
+      //      console.log('show');
+
       this.visible = true;
-      if (pageDomId) this.getByMlCaseId(pageDomId);
+      // if (!this.getData) this.getByMlCaseId();
+
+
     },
     //关闭弹窗的时候清除数据
     closeDialog() {
       this.visible = false;
     },
-    //获取文书列表
-    getByMlCaseId(pageDomId) {
-      findCarInfoFileByIdApi(pageDomId).then(
+    //获取已完成文书列表
+    getByMlCaseId() {
+      this.getData = true;
+      let _this = this
+      findVoByDocCaseIdApi(this.caseId).then(
         res => {
-          console.log(res)
-          if (res.code == 200) {
-            this.fileList = res.data
-          }
+          console.log(res);
+          _this.caseList = res.data;
         },
         error => {
-          // reject(error);
-        })
-
+          console.log(error);
+        }
+      );
     },
-
+    // getByMlCaseId() {
+    //   let _this = this
+    //   findByCaseBasicInfoIdApi(this.caseId).then(
+    //     res => {
+    //         debugger
+    //       console.log(res);
+    //       _this.caseList = res.data;
+    //     },
+    //     error => {
+    //       console.log(error);
+    //     }
+    //   );
+    // },
     routerArchiveCatalogueDetail() {
       let _thats = this
       this.docSrc = this.host + this.checkedDocId[0];
@@ -133,8 +148,10 @@ export default {
     },
     //全选
     handleCheckAllChange(val) {
+      //      debugger
+      //      console.log(val);
       if (val) {
-        this.fileList.forEach(item => {
+        this.caseList.forEach(item => {
           //复选框存入id
           this.checkedDocId.push(item.storageId);
         });

@@ -743,6 +743,6 @@ export default [{
       oneTab: true,
     },
     component: () => import("@/page/caseHandle/case/form/adminCoerciveMeasure.vue")
-  },
+  }
 
 ]

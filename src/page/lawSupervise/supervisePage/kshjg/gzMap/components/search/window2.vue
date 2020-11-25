@@ -35,7 +35,7 @@ export default {
      */
     renderSlot(h,{ node, data, store }) {
       return (
-        <div class="tree-slot-box">
+        <div class="tree-slot-boxs">
           <img
             src={
               data.label === '执法人员' ?
@@ -73,7 +73,7 @@ export default {
   padding: 15px;
   .el-tree {
     border-radius: 4px;
-    .tree-slot-box {
+    .tree-slot-boxs {
       img {
         width: 13px;
         margin-right: 5px;

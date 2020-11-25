@@ -163,6 +163,8 @@ export default {
         return '已退回'
       } else if (data === '5') {
         return '已关闭'
+      } else if (data === '0') {
+        return '已发送'
       }
       return data
     }
