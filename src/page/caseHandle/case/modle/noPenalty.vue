@@ -14,7 +14,7 @@
             <div class="row">
               <div class="col">
                 <el-form-item label="原因" prop="reason" class="reasonCon" :rules="fieldRules('reason',propertyFeatures['reason'])">
-                  <el-radio-group v-model="formData.reason" @change="changeReason">
+                  <el-radio-group v-model="formData.reason" @change="changeReason" :disabled="getControls()">
                     <p><el-radio :label="1">违法行为轻微</el-radio></p>
                     <p><el-radio :label="2">违法事实不能成立</el-radio></p>
                     <p>
@@ -38,6 +38,7 @@
                       :show-file-list="false"
                       :on-change='fileChange'
                       :before-upload="uploadFileValidat"
+                      v-if="!getControls()"
                       >
                       <el-button size="small" type="primary">选取文件</el-button> <span class="upLoadNumSpan">最多上传3个附件</span>
 
@@ -45,7 +46,7 @@
                   <ul class="el-upload-list el-upload-list--text">
                     <li v-for="item in fileListArr" :key="item.id" class="el-upload-list__item is-ready" @click.stop="evidenceDetail(item)">
                       <i class="el-icon-document"></i>
-                      <span>{{item.fileName}}</span><span @click.stop="deleteFile(item)">
+                      <span>{{item.fileName}}</span><span @click.stop="deleteFile(item)" v-if="!getControls()">
                         <i class="el-icon-close" style="float:right"></i>
                         </span>
                       </li>
@@ -58,7 +59,7 @@
               <div class="col">
                 <el-form-item prop="notes" label="备注" :rules="fieldRules('notes',propertyFeatures['notes'])">
                   <el-input type="textarea" ref="notes" clearable :rows="4" v-model="formData.notes" size="small" placeholder="请输入"
-                  :disabled="fieldDisabled(propertyFeatures['notes'])"></el-input>
+                  :disabled="fieldDisabled(propertyFeatures['notes']) || getControls()"></el-input>
                 </el-form-item>
               </div>
             </div>
@@ -147,6 +148,9 @@ export default {
   computed: { ...mapGetters(['caseId','IsLawEnforcementSupervision']) },
   inject: ['reload'],
   methods: {
+      getControls(){
+          return (this.$route.params.isComplete ||  this.IsLawEnforcementSupervision);
+      },
     fileChange(file){
       console.log('状态状态状态状态状态状态',file.status)
       this.percentage=0

@@ -738,9 +738,9 @@ export default {
       let canAdd = true;
       if (this.tableDatas.length > 0){
         for (let i = 0; i < this.tableDatas.length; i++) {
-          if (!this.tableDatas[i].resName || !this.tableDatas[i].spec) {
+          if (!this.tableDatas[i].resName || !this.tableDatas[i].spec  || !this.tableDatas[i].amount) {
             this.$message({
-              message: "财务名称或规格不能为空！",
+              message: "财务名称、规格、数量均不能为空！",
               type: "warning"
             });
             canAdd = false;

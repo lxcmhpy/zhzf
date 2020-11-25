@@ -71,27 +71,62 @@ export default {
           {
           pName: 'Geolocation',
           events: {
-              init(o) {                
-                  console.log(o)
-                  // o 是高德地图定位插件实例
-                o.getCurrentPosition((status, result) => {
-                  console.log(status,result);
-                  if (result && result.position) {
-                    console.log("result",result);
-                    self.lng = result.position.lng;
-                    self.lat = result.position.lat;
-                    self.address = result.formattedAddress;
-                    self.center = [self.lng, self.lat];
-                    self.loaded = true;
-                    self.componentMarker.position=[self.lng, self.lat]
-                    self.$nextTick();
-                  }else{
-                    alert('定位失败！');
-                    self.loaded = true;
-                    self.$nextTick();
-                  }
-                });
-              }
+            //   init(o) {                
+            //       console.log(o)
+            //       // o 是高德地图定位插件实例
+            //     o.getCurrentPosition((status, result) => {
+            //       console.log(status,result);
+            //       if (result && result.position) {
+            //         console.log("result",result);
+            //         self.lng = result.position.lng;
+            //         self.lat = result.position.lat;
+            //         self.address = result.formattedAddress;
+            //         self.center = [self.lng, self.lat];
+            //         self.loaded = true;
+            //         self.componentMarker.position=[self.lng, self.lat]
+            //         self.$nextTick();
+            //       }else{
+            //         alert('定位失败！');
+            //         self.loaded = true;
+            //         self.$nextTick();
+            //       }
+            //     });
+            //   },
+
+              init (o) {
+              // o 是高德地图定位插件实例
+              o.getCurrentPosition((status, result) => {
+                if (result && result.position) {
+                  console.log(result.addressComponent)
+                  self.currentAddressObj = result.addressComponent;
+                  self.lng = result.position.lng;
+                  self.lat = result.position.lat;
+                //   self.address = result.formattedAddress;
+                  self.center = [self.lng, self.lat];
+                  self.loaded = true;
+                  self.componentMarker.position=[self.lng, self.lat];
+                  self.$nextTick();
+                } else {
+                  o.getCityInfo((status, result) => {
+                    if (result && result.city) {
+                      self.currentAddressObj = result;
+                      self.lng = result.center[0];
+                      self.lat = result.center[1];
+                      self.center = result.center;
+                      self.loaded = true;
+                      self.componentMarker.position=[self.lng, self.lat];
+                      self.$nextTick();
+                      self.zoom = 11
+                    } else {
+                      self.$message({
+                        type: "error",
+                        message: result.message
+                      });
+                    }
+                  });
+                }
+              });
+            }
           }
       }],
       events: {
