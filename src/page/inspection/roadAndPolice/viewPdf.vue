@@ -15,7 +15,7 @@
     <el-button
       type="primary"
       style="width: 70px;height: 40px;position: fixed;top: 115px;left: 240px;"
-      @click="back"
+      @click="goTo"
       >返回</el-button
     >
   </div>
@@ -43,17 +43,19 @@ export default {
     ])
   },
   methods: {
-    getFile() {
+    // 获取文件路径
+    // 文件存储id又路由传来
+    getFileUrl() {
       if (this.$route.params && this.$route.params.storageId) {
         let storageId = this.$route.params.storageId;
         this.$util.com_getFileStream(storageId).then(res => {
-          // debugger;
           this.pdfShowUrl = res;
         });
       }
     },
 
-    back() {
+    //跳转
+    goTo() {
       this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
       // this.$router.go(-1); //返回上一层
       this.$router.push({
@@ -62,7 +64,7 @@ export default {
     }
   },
   created() {
-    this.getFile();
+    this.getFileUrl();
   }
 };
 </script>

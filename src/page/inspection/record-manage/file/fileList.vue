@@ -237,9 +237,8 @@ export default {
     },
     searchList() {
       let data = this.inspectionOrderId
-      getDocListByIdApi(data).then(
+      getDocListByIdApi(data,true).then(
         res => {
-          console.log(res)
           if (res.data) {
             this.modleList = res.data
             this.modleList.forEach(element => {
