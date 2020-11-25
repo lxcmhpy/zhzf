@@ -111,11 +111,11 @@ export default {
             personInfos: { name: '执法人员', value: '{personInfos}' },
         },
         checkContent: {
-            checkSroadNumtartTime: { name: '路线编号', value: '{checkSroadNumtartTime}' },
+            checkSroadNumtartTime: { name: '路线编号', value: '{roadNum}' },
             roadName: { name: '路线名称', value: '{roadName}' },
             drivingDirection: { name: '行驶方向', value: '{drivingDirection}' },
-            start: { name: '开始桩号', value: 'K{startKilometer}- {startMeter}m' },
-            end: { name: '结束桩号', value: 'K{endKilometer}- {endMeter}m' }
+            start: { name: '开始桩号', value: 'K{startKilometer} - {startMeter}m' },
+            end: { name: '结束桩号', value: 'K{endKilometer} - {endMeter}m' }
         }
     }
 },
@@ -178,7 +178,6 @@ export default {
             this.parentNodeData = parentNodeData;
             this.templateFrom = {};
             this.templateFrom.roadCondition = parseInt(parentNodeData.roadCondition);
-            console.log(this.templateFrom,'this.templateFrom')
         },
         removeNode(nodeData) {
             event.stopPropagation();
@@ -244,7 +243,7 @@ export default {
             this.templateFrom.roadCondition = parseInt(this.parentNodeData.roadCondition);
         },
         tmpButtonClick(item) {
-            this.templateFrom.content += item.value;
+            this.templateFrom.content += item.value || "";
             $("#tempContent").focus();
         }
     },

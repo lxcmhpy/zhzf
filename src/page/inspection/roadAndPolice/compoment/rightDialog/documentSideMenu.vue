@@ -1,5 +1,5 @@
 <template v-if="caseInfo">
-  <div>
+  <div class="inspection-doc-dialog">
     <el-dialog
       custom-class="leftDialog leftDialog2 archiveCatalogueBox documentFormCat"
       :visible.sync="visible"
@@ -20,8 +20,23 @@
       <div v-if="!inspectionOverWeightId">
         请先保存表单
       </div>
-      <div class="userList caseAndEvidenceListDiaClass">
-        <li
+      <div v-if="fileList.length === 0">暂无数据</div>
+      <div
+        v-if="inspectionOverWeightId"
+        class="userList caseAndEvidenceListDiaClass"
+      >
+        <el-checkbox-group v-model="checkList">
+          <div
+            class="check-div"
+            v-for="(item, index) in fileList"
+            :key="item.docName"
+          >
+            <span class="index-span">{{ index + 1 }}</span>
+            <el-checkbox  :disabled='item.status!=="完成"'></el-checkbox>
+            <span class="doc-name-span" :disabled='item.status!=="完成"' @click="handleClickDoc(item)">{{ item.docName }}</span>
+          </div>
+        </el-checkbox-group>
+        <!-- <li
           v-for="(item, index) in fileList"
           :label="item.docName"
           :key="item.docName"
@@ -33,22 +48,21 @@
           <span class="name" style="margin-left:20px;color:bule">{{
             item.status
           }}</span>
-        </li>
+        </li> -->
       </div>
     </el-dialog>
   </div>
 </template>
 <script>
 import { mapGetters } from "vuex";
-import {
-  getDocListByIdApi
-} from "@/api/inspection";
+import { getDocListByIdApi } from "@/api/inspection";
 import iLocalStroage from "@/common/js/localStroage";
 export default {
   data() {
     return {
       visible: false,
-      fileList: []
+      fileList: [],
+      checkList: []
     };
   },
   inject: ["reload"],
@@ -57,15 +71,25 @@ export default {
   },
   methods: {
     showModal() {
+      // debugger;
       this.visible = true;
-      if (this.penaltyDecisionId) {
-        this.findCarInfoFileById(this.penaltyDecisionId);
+      this.fileList = [];
+      // _.throttle(()=>{
+      // console.log('hello')
+      // },1000)
+      if (this.penaltyDecisionId && this.fileList.length === 0) {
+        this.getDocListByIdFn();
       }
+    },
+
+    handleClickDoc(doc){
+    console.log("🚀 ~ file: documentSideMenu.vue ~ line 86 ~ handleClickDoc ~ doc", doc)
+      
     },
 
     //点击文书
     handleClickDocument(item) {
-      console.log("🚀 ~ ~ item", item)
+      console.log("🚀 ~ ~ item", item);
       if (item.status == "完成") {
         this.$store.dispatch("deleteTabs", this.$route.name); //关闭当前页签
         this.$router.push({
@@ -92,16 +116,12 @@ export default {
     },
 
     //获取文书列表
-    findCarInfoFileById(pageDomId) {
-      getDocListByIdApi(pageDomId).then(
-        res => {
-          console.log(" -> res", res);
-          if (res.code == 200) {
-            this.fileList = res.data;
-          }
-        },
-        error => {}
-      );
+    getDocListByIdFn() {
+      getDocListByIdApi(this.penaltyDecisionId, false).then(res => {
+        if (res.code == 200) {
+          this.fileList = res.data || [];
+        }
+      });
     },
 
     //设置弹窗左偏移
@@ -120,3 +140,26 @@ export default {
   }
 };
 </script>
+<style lang="scss">
+// .inspection-doc-dialog {
+.userList {
+  .check-div {
+    height: 40px;
+    line-height: 40px;
+    .index-span {
+      display: inline-block;
+      width: 20px;
+      font-size: 16px;
+    }
+    .doc-name-span {
+      display: inline-block;
+      width: calc(100% - 38px);
+      font-size: 16px;
+      margin-left: 4px;
+      cursor: pointer;
+    }
+  }
+}
+
+// }
+</style>

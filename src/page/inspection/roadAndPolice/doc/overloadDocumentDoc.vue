@@ -300,8 +300,7 @@ import rightMenu from "../compoment/rightMenu/index.vue";
 import { findCaseAllBindPropertyApi } from "@/api/caseHandle";
 import {
   findCarInfoByIdApi,
-  // findOverloadDocByIdApi,
-  // delOverloadDocById,
+  getDocListByIdApi,
   createNewPdf
 } from "@/api/inspection";
 
@@ -309,7 +308,7 @@ export default {
   mixins: [mixinGetCaseApiList],
   inject: ["reload"],
   computed: {
-    ...mapGetters(["inspectionOverWeightId"])
+    ...mapGetters(["inspectionOverWeightId", "penaltyDecisionId"])
   },
   components: {
     floatBtns,
@@ -329,10 +328,10 @@ export default {
     //   callback();
     // };
     return {
+      docId: "",
       oldData: {},
       saveType: "",
       docData: {
-        
         orgName: "", //归档部门名称（机构名）
         orgWord: "机构", //机构字
         orderNum: "001", //顺序号
@@ -384,7 +383,6 @@ export default {
           { required: true, message: "处理结果不能为空", trigger: "blur" }
         ]
       },
-      
 
       nameLength: 23,
       adressLength: 23,
@@ -445,16 +443,15 @@ export default {
     //根据ID获取数据,构建formParams
     getDocDataByCaseIdAndDocId() {
       findCarInfoByIdApi(this.inspectionOverWeightId).then(res => {
-        console.log(" -> res", res);
         this.oldData = res.data;
         this.initDocData();
-        // this.findOverloadDocById(res.data);
       });
     },
 
     //保存接口
     saveDoc() {
       let params = {
+        id: this.docId,
         docContent: JSON.stringify(this.docData),
         docName: "卷宗封面【青海检查】",
         orderId: this.inspectionOverWeightId,
@@ -462,22 +459,22 @@ export default {
         status: this.saveType == 0 ? "暂存" : "保存"
       };
       console.log(" -> this.docData", this.docData);
-      // debugger;
+      debugger;
       createNewPdf(params).then(res => {
         console.log(" -> res", res);
         this.$message({
           type: "success",
           message: res.msg
         });
-        if(res.data.storageId){
+        if (res.data.storageId) {
           this.$router.push({
-            name:'inspection_overload_pdf',
-            params:{
-              id: this.inspectionOverWeightId, storageId: res.data.storageId
+            name: "inspection_overload_pdf",
+            params: {
+              id: this.inspectionOverWeightId,
+              storageId: res.data.storageId
             }
-          })
+          });
         }
-        
       });
     },
 
@@ -517,17 +514,34 @@ export default {
       }
     },
 
-    findOverloadDocById(obj) {
-      debugger;
-      findOverloadDocByIdApi(obj.penaltyDecision.id).then(res => {
-        console.log("findOverloadDocById -> res", res);
+    showBack(obj) {
+      console.log(
+        "🚀 ~ file: overloadDocumentDoc.vue ~ line 516 ~ showBack ~ obj",
+        obj
+      );
+      this.docData = obj;
+    },
+
+    getDocListByIdFn() {
+      getDocListByIdApi(this.inspectionOverWeightId, true).then(res => {
+        if (res.data.length) {
+          res.data.forEach(item => {
+            if (item.docName === "卷宗封面") {
+              this.docId = item.id;
+              if (item.docContent && item.docContent.length) {
+                this.showBack(JSON.parse(item.docContent));
+              } else {
+                this.getDocDataByCaseIdAndDocId();
+              }
+            }
+          });
+        }
       });
     }
   },
   created() {
-    this.getDocDataByCaseIdAndDocId();
-    // this.getData();
-    // this.getLawOfficer();
+    this.getDocListByIdFn();
+    // this.getDocDataByCaseIdAndDocId();
   }
 };
 </script>

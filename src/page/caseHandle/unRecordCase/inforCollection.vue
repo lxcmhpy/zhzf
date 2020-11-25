@@ -1583,7 +1583,7 @@
               <el-input v-model="inforForm.discretionId"></el-input>
             </el-form-item>-->
             <p v-if="judgFreedomList && judgFreedomList.length !== 0">
-              自由裁量标准(违法程度/违法情节/建议处罚)
+              自由裁量标准(违法程度/违法情节/处罚标准)
             </p>
             <div>
               <el-radio-group
@@ -1615,7 +1615,7 @@
                       :content="item.jycf"
                       placement="top"
                     >
-                      <span>{{ item.lawerLimit }}</span>
+                      <span>{{ item.jycf }}</span>
                     </el-tooltip>
                   </div>
                 </el-radio>
@@ -2564,7 +2564,8 @@ export default {
         (res) => {
           if (res.data.length) {
             _this.judgFreedomList = res.data;
-            _this.initMoneyWhenExistStandard(res.data[0]);
+            console.log("自由裁量权："+res)
+           // _this.initMoneyWhenExistStandard(res.data[0]);
           }
         },
         (err) => {}
@@ -2577,10 +2578,11 @@ export default {
         if (val === item.id) {
           this.minLawerLimit = item.lawerLimit;
           this.maxLawerLimit = item.upperLimit;
-          this.inforForm.tempPunishAmount = item.lawerLimit;
+          //this.inforForm.tempPunishAmount = item.lawerLimit;
+          this.changeDiscretion(item);
         }
       });
-      this.changeTempPunishAmount();
+      //this.changeTempPunishAmount();
     },
     //计算拟处罚金额上下限数值，分有无自由裁量2种情况
     // 修改拟定金额input值
@@ -2607,6 +2609,28 @@ export default {
         return;
       }
       this.punishAmountAtention = "";
+    },
+    // 修改自由裁量权选择
+    changeDiscretion(item) {
+      if (item.lawerLimit == ""||item.lawerLimit == 0) {
+        if (item.upperLimit == ""||item.upperLimit == 0) {
+          this.punishAmountAtention = "";//上下限均为空或0时，不提示。
+        } else{
+          this.punishAmountAtention = "根据自由裁量权，处罚金额参考区间："+item.upperLimit+"元及以下";//下限为空或为0，上限为非零数字，如2000，则提示：“根据自由裁量权，处罚金额参考区间：2000元及以下”。
+        }
+      }else{
+        if (item.upperLimit == ""||item.upperLimit == 0) {
+          this.punishAmountAtention = "根据自由裁量权，处罚金额参考区间："+item.lawerLimit+"元及以上";//上限为空或为0，下限为非零数字，如1000，则提示：“根据自由裁量权，处罚金额参考区间：1000元及以上
+        }else{
+          if(
+            parseInt(item.lawerLimit) == parseInt(item.upperLimit)
+            ){
+            this.punishAmountAtention = "根据自由裁量权，处罚金额参考标准为："+item.upperLimit+"元";//上限、下限非空不为0，且相等时，如上限2000，下限2000，则提示：“根据自由裁量权，处罚金额参考标准为： 2000元”。
+          }else{
+            this.punishAmountAtention = "根据自由裁量权，处罚金额参考标准为："+item.lawerLimit+"元至"+item.upperLimit+"元";//上限、下限均为非零数字时，如上限2000，下限1000，则提示：“根据自由裁量权，处罚金额参考区间：1000元至2000元”。
+          }
+        }
+      }
     },
     toNextPart() {},
     //点击滚动

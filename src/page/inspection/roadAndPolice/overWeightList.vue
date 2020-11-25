@@ -149,7 +149,8 @@
           </el-table-column>
           <el-table-column prop="fileStatus" label="处置状态" align="center">
             <template slot-scope="scope">
-              {{ scope.row.fileStatus == 0 ? "进行中" : "待归档" }}
+              {{fileStatusMap[scope.row.fileStatus]}}
+              <!-- {{ scope.row.fileStatus == 0 ? "进行中" : "待归档" }} -->
             </template>
           </el-table-column>
           <el-table-column fixed="right" label="操作" align="center">
@@ -206,9 +207,15 @@ import {
   delDocumentById,
   getDictListDetailByNameApi
 } from "@/api/inspection";
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
+      fileStatusMap:{
+        0:'进行中',
+        1:'待归档',
+        2:'已归档',
+      },
       recordList: [],
       total: 0,
       currentPage: 1, //当前页
@@ -229,7 +236,7 @@ export default {
         { name: "全部", value: 3 },
         { name: "进行中", value: 0 },
         { name: "待归档", value: 1 },
-        { name: "已归档", value: 2 },
+        { name: "已归档", value: 2 }
       ],
 
       //超限类型
@@ -255,7 +262,7 @@ export default {
       },
 
       searchForm: {
-        vehicleShipId: "",//车牌号
+        vehicleShipId: "", //车牌号
         fileStatus: 3,
         checkType: ""
       },
@@ -325,16 +332,20 @@ export default {
 
     //新建
     handleClickAddType(label) {
-      console.log(" -> label", label)
-      let _this = this;
+      console.log(" -> label", label);
+      // debugger;
       if (label == "路警联合") {
         this.$store.commit("set_inspection_OverWeightId", "");
+        console.log("aaaaaaaaaa", this.inspectionOverWeightId);
         this.$router.push({
           name: "inspection_overWeightForm"
         });
         this.$store.commit("set_inspection_OverWeight_add", true);
       }
     }
+  },
+  computed: {
+    ...mapGetters(["inspectionOverWeightId"])
   },
   mounted() {
     this.getTableData();

@@ -99,7 +99,7 @@ export function dlyscyryCheckApi(data) {
         showloading: false,
         params: data,
         // baseUrlType:  'CHECK_API',
-        baseUrlType: 'TEST_HOST',
+        baseUrlType: 'NX_API',
         cancelToken: setCancelSource()
     });
 }

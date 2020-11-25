@@ -1226,44 +1226,70 @@ export default {
     //模板生成描述
     generateDescribes() {
       const from = this.inspectRecordForm;
-      const tmp = this.normalRecordTemp.find(
-        (t) => t.templateId == from.desTemplateId
-      );
-      from.describes = this.generateContent(tmp.content);
-      this.inspectRecordForm = JSON.parse(JSON.stringify(from));
+      if(from.desTemplateId){
+        const tmp = this.normalRecordTemp.find(
+          (t) => t.templateId == from.desTemplateId
+        );
+        from.describes = this.generateContent(tmp.content);
+        this.inspectRecordForm = JSON.parse(JSON.stringify(from));
+      }else{
+        this.$message({type: "warning", message: "请选择描述模板！"});
+      }
     },
     //异常摘要生成
     problemAbstractGenerate(listAbnIndex) {
       const curAbn = this.inspectRecordForm.listAbn[listAbnIndex];
-      const tmp = this.abnormalRecordTemp.find(
-        (t) => t.templateId == curAbn.templateId
-      );
-      this.inspectRecordForm.listAbn[
-        listAbnIndex
-      ].problemAbstract = this.generateContent(tmp.content);
+      if(curAbn.templateId){
+        const tmp = this.abnormalRecordTemp.find(
+          (t) => t.templateId == curAbn.templateId
+        );
+        this.inspectRecordForm.listAbn[
+          listAbnIndex
+        ].problemAbstract = this.generateContent(tmp.content);
+      }else{
+        this.$message({type: "warning", message: "请选择摘要模板！"});
+      }
     },
     generateContent(content) {
       for (const key in this.inspectRecordForm) {
-        switch (key) {
-          case "checkCategory":
-            content = content.replace(
-              `{${key}}`,
-              this.checkCategoryList.find(
-                (c) => c.id == this.inspectRecordForm[key]
-              ).name
-            );
-            break;
-          case "checkType":
-            content = content.replace(
-              `{${key}}`,
-              this.checkTypeList.find(
-                (c) => c.id == this.inspectRecordForm[key]
-              ).name
-            );
-            break;
-          default:
-            content = content.replace(`{${key}}`, this.inspectRecordForm[key]);
-            break;
+        if(this.inspectRecordForm[key]){
+          switch (key) {
+            case "checkCategory":
+              content = content.replaceAll(
+                `{${key}}`,
+                this.checkCategoryList.find(
+                  (c) => c.id == this.inspectRecordForm[key]
+                ).name
+              );
+              break;
+            case "checkType":
+              content = content.replaceAll(
+                `{${key}}`,
+                this.checkTypeList.find(
+                  (c) => c.id == this.inspectRecordForm[key]
+                ).name
+              );
+              break;
+            case "lawPersonListIndex":
+              let personInfosArr = [];
+              this.inspectRecordForm.lawPersonListIndex.forEach((i) => {
+                personInfosArr.push(this.lawPersonList[i].lawOfficerName);
+              });
+              content = content.replaceAll(
+                "{personInfos}",
+                personInfosArr.toString()
+              );
+              break;
+            case "drivingDirection":
+              let value = this.inspectRecordForm[key] == "1" ? "上行" : "下行";
+              content = content.replaceAll(
+                `{${key}}`,
+                value
+              );
+            default:
+              content = content.replaceAll(`{${key}}`, this.inspectRecordForm[key]);
+              break;
+          }
         }
       }
       return content;

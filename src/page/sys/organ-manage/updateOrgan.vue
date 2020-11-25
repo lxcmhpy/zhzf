@@ -92,6 +92,11 @@
             </el-select>
           </el-form-item>
         </div>
+        <div class="item" id="bigItem">
+          <el-form-item label="单位企业统一社会信用代码" prop="socialCreditCode">
+            <el-input v-model="addOrganForm.socialCreditCode"></el-input>
+          </el-form-item>
+        </div>
       </div>
       <div class="part">
         <p class="titleP">机构详情</p>
@@ -235,6 +240,7 @@ export default {
         enforcementOrgan2:'',
         enforcementBody:'',
         administrativeDivision:'',
+        socialCreditCode:'',
         administrativeDivisionArray: [],
       },
       addValueForm:{

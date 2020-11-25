@@ -1052,11 +1052,11 @@ export function createNewPdf(data) {
 }
 
 // 查找 卷宗目录列表
-export function getDocListByIdApi(data) {
+export function getDocListByIdApi(data,loading) {
     return request({
         url: "/xzjc/document/getDocListById/" + data,
         method: "get",
-        showloading: true,
+        showloading: loading,
         loadingType: 'loadPart',
         baseUrlType: 'CAPTCHA_HOST',
         cancelToken: setCancelSource()
