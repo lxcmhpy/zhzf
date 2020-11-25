@@ -472,6 +472,15 @@
           v-for="(driverOrAgentInfo, index) in driverOrAgentInfoList"
           :key="index"
         >
+        <div class="buttonBox" v-if="index != 0">
+            <el-button
+              type="primary"
+              size="medium"
+              icon="el-icon-minus"
+              @click="deleteDriverOrAgent(index)"
+              >删除本条数据</el-button
+            >
+        </div>
           <div v-show="partyTypePerson == '1'">
             <div>
               <div class="item">
@@ -816,6 +825,15 @@
               <el-input v-model="inforForm.trailerCcertId"></el-input>
             </el-form-item>
           </div>
+        </div>
+        <div class="buttonBox" v-if="showTrailer">
+          <el-button
+            type="primary"
+            size="medium"
+            icon="el-icon-minus"
+            @click="deleteTrailer"
+            >删除挂车数据</el-button
+          >
         </div>
       </div>
       <div class="caseFormBac" id="link_4" ref="link_4" @mousewheel="scrool4">

@@ -11,7 +11,7 @@
       stripe
       resizable
       border
-      :span-method="objectSpanMethod"
+      :span-method="objectSpanMethod" 
       style="width: 100%; height: 300px"
     >
       <el-table-column
@@ -29,8 +29,8 @@
         align="center"
       ></el-table-column>
       <el-table-column
-        prop="caseName"
-        label="案由"
+        prop="partyName"
+        label="当事人"
         align="center"
       ></el-table-column>
       <el-table-column

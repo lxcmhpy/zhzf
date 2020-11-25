@@ -29,7 +29,7 @@
         <p>
           本机关依法于
           <span class="p_datapick">
-            <el-form-item prop="makeDate" class="pdf_datapick">
+            <el-form-item prop="saveDate" class="pdf_datapick">
               <el-date-picker
                 v-model="docData.saveDate"
                 type="date"
@@ -53,7 +53,7 @@
             </el-form-item>
           </span>。依照《中华人民共和国行政处罚法》第三十七条第二款的规定，本机关决定自
           <span class="p_datapick">
-            <el-form-item prop="makeDate" class="pdf_datapick">
+            <el-form-item prop="relieveDate" class="pdf_datapick">
               <el-date-picker
                 v-model="docData.relieveDate"
                 type="date"
@@ -118,6 +118,7 @@ export default {
         saveDate: '',
         caseNumberCopy: '',
         relieveDate: '',
+        relieveDate:'',
       },
       handleType: 0, //0  暂存     1 提交
       caseDocDataForm: {

@@ -14,14 +14,14 @@ let vm = new Vue();
 export function yehuCheckApi(data) {
     console.log(data);
     return request({
-        // url: "/cy/yuz/yh",
-        url: "/hcr/cy/yuz/yh",
+        url: "/cy/yuz/yh",
+        // url: "/hcr/cy/yuz/yh",
         method: "GET",
         showloading: true,
         loadingType: 'loadPart',
         params: data,
-        // baseUrlType:  'CHECK_API',
-        baseUrlType:  'TEST_HOST',
+        baseUrlType:  'CHECK_API',
+        // baseUrlType:  'TEST_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -108,13 +108,13 @@ export function dlyscyryCheckApi(data) {
 export function yyclCheckApi(data) {
     console.log(data);
     return request({
-        // url: "/cy/yuz/car",
-        url: '/hcr/cy/yuz/car',
+        url: "/cy/yuz/car",
+        // url: '/hcr/cy/yuz/car',
         method: "GET",
         showloading: false,
         params: data,
-        // baseUrlType: 'CHECK_API',
-        baseUrlType: 'TEST_HOST',
+        baseUrlType: 'CHECK_API',
+        // baseUrlType: 'TEST_HOST',
         cancelToken: setCancelSource()
     });
 }
@@ -126,14 +126,14 @@ export function vehicleCheckApi(data) {
       json:data
     };
     return request({
-        // url: "/cy/yuz/vehicle",
-        url: "/hcr/cy/yuz/vehicle",
+        url: "/cy/yuz/vehicle",
+        // url: "/hcr/cy/yuz/vehicle",
         method: "GET",
         showloading: true,
         loadingType:'loadPart',
         params: param,
-        // baseUrlType:  'CHECK_API',
-        baseUrlType: 'TEST_HOST',
+        baseUrlType:  'CHECK_API',
+        // baseUrlType: 'TEST_HOST',
         cancelToken: setCancelSource()
     });
 }

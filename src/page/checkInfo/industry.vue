@@ -58,7 +58,7 @@
         <span>相关的{{yehuAmount}}个搜索结果</span>
       </div>
       <div class="tablePart" align="center">
-        <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;min-height: 100px" >
+        <el-table :data="tableData" stripe resizable border style="width: 100%;height:100%;min-height: 100px" :span-method="tableSpanMethod" >
           <el-table-column prop="OwnerName" label="业户名称" align="center"></el-table-column>
           <el-table-column prop="LicenseCode" label="经营许可证号" align="center"></el-table-column>
           <el-table-column prop="LicenseIssueOrgan" label="发证机关" align="center"></el-table-column>
@@ -68,14 +68,19 @@
                 <span>{{scope.row.ValidBeginDate}}</span> ~ <span>{{scope.row.ExpireDate}}</span>
             </template>
           </el-table-column>
+          <el-table-column prop="BusinessScopeCode" label="经营范围" align="center"></el-table-column>
           <el-table-column prop="OperatingStatus" label="经营状态" align="center"></el-table-column>
           <el-table-column label="操作" align="center">
                 <template slot-scope="scope" >
                     <span>
                       <el-button type="text" @click="industrySee(scope.$index, scope.row)">查看</el-button>
                     </span>
+                </template>
+          </el-table-column>
+          <el-table-column label="违法记录" align="center">
+            <template slot-scope="scope" >
                     <span>
-                      <el-button type="text" @click="showIllegal(scope.row.illeagl)">违法记录({{scope.row.illeaglTotal}})</el-button>
+                      <el-button type="text" @click="showIllegal(scope.row.illeagl)">{{scope.row.illeaglTotal}}次</el-button>
                     </span>
                 </template>
           </el-table-column>
@@ -344,7 +349,7 @@ export default {
          // _this.searchList = res.data
           // _this.tableData = res.data;
           if ( res.data != null && res.data.length > 0) {
-            _this.yehuAmount = _this.tableData.length;
+            _this.yehuAmount = res.data.length;
             this.getIllegalData(res.data);
           }
           if ( res.data != null &&  res.data.length > 1) {
@@ -374,7 +379,7 @@ export default {
     //获取违法行为条数
     async getIllegalData(checkData){
       for(let item of checkData){
-        let data = {partyName:item.OwnerName,roadTransportLicense:item.LicenseCode}
+        let data = {partyName:item.OwnerName,roadTransportLicense:''}
         let illeagalRes = await checkWithilleaglApi(data);
         item.illeagl = illeagalRes.data;
         let illeaglTotal = 0;
@@ -384,9 +389,54 @@ export default {
         item.illeaglTotal = illeaglTotal;
 
       }
+      
+      
+      
+      //设置 合并单元格
+      let startIndex = 0;
+      for(let item2 of checkData){
+        item2.ownerNum = 0;
+          for(let item3 of checkData){
+            if(item2.OwnerName == item3.OwnerName)  item2.ownerNum++
+          }   
+        if(item2.OperatingStatus == '营业')  item2.OperatingStatusType = 1;
+        else item2.OperatingStatusType = 0;
+      }
+
+      //排序 先按名称排序 后按营业歇业排序
+      checkData = checkData.sort(function(a,b){
+          return a.OwnerName - b.OwnerName;
+      });
+      checkData = checkData.sort(function(a,b){
+        if(a.OwnerName == b.OwnerName){
+          return b.OperatingStatusType - a.OperatingStatusType
+        }
+      })
+      
+      for(let i = 0;i < checkData.length;i){
+        checkData[i].total = checkData[i].ownerNum;
+        i = i + checkData[i].ownerNum
+      }
+      
+
       console.log(checkData);
       this.tableData = checkData;
-    }
+    },
+    tableSpanMethod({ row, column, rowIndex, columnIndex }) {
+      if (columnIndex === 0 || columnIndex === 8) {
+        if (row.total) {
+          return {
+            rowspan: row.total,
+            colspan: 1,
+          };
+        } else {
+          return {
+            rowspan: 0,
+            colspan: 0,
+          };
+        }
+      }
+    },
 
   }
 }

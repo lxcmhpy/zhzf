@@ -552,9 +552,21 @@ export const inforCollectionCommonMixins = {
       };
       this.driverOrAgentInfoList.push(item);
     },
+    //删除代理人
+    deleteDriverOrAgent(index){
+      this.driverOrAgentInfoList.splice(index,1);
+    },
     //添加挂车
     addTrailer() {
       this.showTrailer = true;
+    },
+    deleteTrailer(){
+      this.showTrailer = false;
+      this.inforForm.trailerIdNo = "";
+      this.inforForm.trailerColor = "";
+      this.inforForm.trailerType = "";
+      this.inforForm.trailerBrand = "";
+      this.inforForm.trailerCcertId = "";
     },
     //点击处罚依据显示弹窗
     showPunishDiag(titleType='') {

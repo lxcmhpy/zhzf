@@ -63,8 +63,12 @@
                     <span>
                     <el-button type="text" @click="transportWorkerSee(scope.$index, scope.row)">查看</el-button>
                     </span>
+                </template>
+          </el-table-column>
+          <el-table-column label="违法记录" align="center">
+            <template slot-scope="scope" >
                     <span>
-                      <el-button type="text" @click="showIllegal(scope.row.illeagl)">违法记录({{scope.row.illeaglTotal}})</el-button>
+                      <el-button type="text" @click="showIllegal(scope.row.illeagl)">{{scope.row.illeaglTotal}}次</el-button>
                     </span>
                 </template>
           </el-table-column>

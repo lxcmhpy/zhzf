@@ -67,8 +67,12 @@
                     <span>
                       <el-button type="text" @click="commercialVehicleSee(scope.$index, scope.row)">查看</el-button>
                     </span>
+                </template>
+          </el-table-column>
+           <el-table-column label="违法记录" align="center">
+            <template slot-scope="scope" >
                     <span>
-                      <el-button type="text" @click="showIllegal(scope.row.illeagl)">违法记录({{scope.row.illeaglTotal}})</el-button>
+                      <el-button type="text" @click="showIllegal(scope.row.illeagl)">{{scope.row.illeaglTotal}}次</el-button>
                     </span>
                 </template>
           </el-table-column>
@@ -173,9 +177,10 @@ export default {
           this.$store.dispatch("yyclCheck", this.checkData).then(
               res => {
                   console.log('返回', res)
-                  _this.tableData = res.data;
-                  if (_this.tableData!=null && _this.tableData.length > 0) {
-                      _this.yyclAmount = _this.tableData.length;
+                  // _this.tableData = res.data;
+                  if (res.data!=null && res.data.length > 0) {
+                      _this.yyclAmount = res.data.length;
+                      this.getIllegalData(res.data);
                   }
                   if (_this.tableData!=null && _this.tableData.length > 1) {
                       _this.showFlag = false;
