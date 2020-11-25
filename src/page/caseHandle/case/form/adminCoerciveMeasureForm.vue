@@ -944,7 +944,7 @@ export default {
       if (this.docData.measureStartDate) {
         if (
           Date.parse(this.docData.measureStartDate) <
-          Date.parse(this.docData.lasj)
+          Date.parse(this.docData.lasj.substr(0,10))
         ) {
           this.$message({
             message: "开始时间不得小于立案时间",
@@ -966,7 +966,7 @@ export default {
     startTime1() {
       if (
         Date.parse(this.docData.measureEndDate) <
-        Date.parse(this.docData.measureStartDate)
+        Date.parse(this.docData.measureStartDate.substr(0,10))
       ) {
         this.$message({
           message: "结束时间不得小于开始时间",
