@@ -293,11 +293,12 @@
       //修改立案登记
       editEstablish(){
         let _this = this;
-        this.$confirm('修改操作将替换掉当前文书（包括签名签章），', '提示', {
+        this.$confirm('修改操作将替换掉当前文书（包括签名签章），<br> 请谨慎操作', '提示', {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           iconClass: 'el-icon-question',
-          customClass: 'custom-confirm'
+          customClass: 'custom-confirm',
+          dangerouslyUseHTMLString: true
         }).then(() => {
           let data = {
             storageId: _this.docPdfStorageId,
